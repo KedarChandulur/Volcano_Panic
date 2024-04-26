@@ -32,9 +32,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7032404648456903537}
-  - {fileID: 4539168447159534604}
-  - {fileID: 6209949304204798808}
-  - {fileID: 3573249447730978784}
+  - {fileID: 2947548209785456987}
+  - {fileID: 444142390153618018}
+  - {fileID: 3930428129997263797}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3300000
@@ -87,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2002255070749113310
+--- !u!1 &1785131385028457549
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,37 +95,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3573249447730978784}
-  - component: {fileID: 704741648571859814}
+  - component: {fileID: 444142390153618018}
+  - component: {fileID: 4205884820795302191}
   m_Layer: 0
-  m_Name: NavMesh_Ignore_Small_Square (3)
+  m_Name: NavMesh_Ignore_Small_Square (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &3573249447730978784
+--- !u!4 &444142390153618018
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2002255070749113310}
+  m_GameObject: {fileID: 1785131385028457549}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0.1, z: -8.5}
-  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_LocalPosition: {x: -8, y: 0.1, z: -8}
+  m_LocalScale: {x: 4, y: 0.3, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &704741648571859814
+--- !u!208 &4205884820795302191
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2002255070749113310}
+  m_GameObject: {fileID: 1785131385028457549}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
@@ -161,8 +161,8 @@ Transform:
   m_GameObject: {fileID: 2926851314909917930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.5, y: 0.1, z: 8.5}
-  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_LocalPosition: {x: -8, y: 0.1, z: 8}
+  m_LocalScale: {x: 4, y: 0.3, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
@@ -183,7 +183,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1 &5919546986313900937
+--- !u!1 &3808484091116904632
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,37 +191,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6209949304204798808}
-  - component: {fileID: 8010985143755145164}
+  - component: {fileID: 3930428129997263797}
+  - component: {fileID: 3507538839037008752}
   m_Layer: 0
-  m_Name: NavMesh_Ignore_Small_Square (2)
+  m_Name: NavMesh_Ignore_Small_Square (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &6209949304204798808
+--- !u!4 &3930428129997263797
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5919546986313900937}
+  m_GameObject: {fileID: 3808484091116904632}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.5, y: 0.1, z: -8.5}
-  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_LocalPosition: {x: 8, y: 0.1, z: -8}
+  m_LocalScale: {x: 4, y: 0.3, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &8010985143755145164
+--- !u!208 &3507538839037008752
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5919546986313900937}
+  m_GameObject: {fileID: 3808484091116904632}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
@@ -231,7 +231,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1 &8717041520169447212
+--- !u!1 &9051147788060076132
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,8 +239,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4539168447159534604}
-  - component: {fileID: 426571149750345005}
+  - component: {fileID: 2947548209785456987}
+  - component: {fileID: 9119459903632732874}
   m_Layer: 0
   m_Name: NavMesh_Ignore_Small_Square (1)
   m_TagString: Untagged
@@ -248,28 +248,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &4539168447159534604
+--- !u!4 &2947548209785456987
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8717041520169447212}
+  m_GameObject: {fileID: 9051147788060076132}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0.1, z: 8.5}
-  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_LocalPosition: {x: 8, y: 0.1, z: 8}
+  m_LocalScale: {x: 4, y: 0.3, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &426571149750345005
+--- !u!208 &9119459903632732874
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8717041520169447212}
+  m_GameObject: {fileID: 9051147788060076132}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
