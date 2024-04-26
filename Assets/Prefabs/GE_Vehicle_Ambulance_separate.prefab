@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 3300008}
   - component: {fileID: 2300008}
   - component: {fileID: 6269876357734326080}
+  - component: {fileID: 6340001879309297560}
   m_Layer: 6
   m_Name: Ambulance Body
   m_TagString: Untagged
@@ -442,6 +443,19 @@ NavMeshAgent:
   m_BaseOffset: 1.186121
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6340001879309297560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30eab96e4ba4e41428949958a59e2d49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 6269876357734326080}
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +465,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400008}
-  - component: {fileID: 1370471378911789763}
   m_Layer: 6
   m_Name: GE_Vehicle_Ambulance_separate
   m_TagString: Untagged
@@ -475,16 +488,3 @@ Transform:
   - {fileID: 400010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1370471378911789763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30eab96e4ba4e41428949958a59e2d49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 6269876357734326080}
