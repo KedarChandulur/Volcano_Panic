@@ -7,13 +7,17 @@ public class FreeFormCamera : MonoBehaviour
     private Vector3 cameraPosition;
     private Vector3 cameraRotation;
 
+    private Vector3 moveDirection;
+    private Vector3 moveVector;
+    private Vector3 rotation;
+
     private const float moveSpeed = 20.0f;
     private const float rotateSpeed = 10.0f;
 
-    float horizontalInput;
-    float verticalInput;
-    float mouseX;
-    float mouseY;
+    float horizontalInput = 0.0f;
+    float verticalInput = 0.0f;
+    float mouseX = 0.0f;
+    float mouseY = 0.0f;
     bool attachedToPlayer = false;
 
     void Update()
@@ -25,6 +29,11 @@ public class FreeFormCamera : MonoBehaviour
                 this.transform.SetParent(null);
                 this.transform.position = cameraPosition;
                 this.transform.eulerAngles = cameraRotation;
+
+                horizontalInput = 0.0f;
+                verticalInput = 0.0f;
+                mouseX = 0.0f;
+                mouseY = 0.0f;
             }
             else
             {
@@ -48,11 +57,8 @@ public class FreeFormCamera : MonoBehaviour
 
             if (!Mathf.Approximately(horizontalInput, 0.0f) || !Mathf.Approximately(verticalInput, 0.0f))
             {
-                Debug.Log(horizontalInput);
-                Debug.Log(verticalInput);
-
-                Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-                Vector3 moveVector = transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
+                moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+                moveVector = transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
                 transform.position += moveVector;
             }
 
@@ -62,7 +68,7 @@ public class FreeFormCamera : MonoBehaviour
                 mouseX = Input.GetAxis("Mouse X");
                 mouseY = Input.GetAxis("Mouse Y");
 
-                Vector3 rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
+                rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
                 transform.eulerAngles += rotation;
             }
         }
