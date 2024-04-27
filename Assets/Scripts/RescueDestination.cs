@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
 
-public class RescueDestination : MonoBehaviour
+public class RescueDestination : BaseRescueClass
 {
-    public static event EventHandler ShareDestination;
-    public Vector3 destinationPosition;
+    public static event EventHandler Share_RescueDestination;
 
     public void Start()
     {
@@ -19,8 +18,6 @@ public class RescueDestination : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //Debug.Log("Rescue Event Triggered");
-
-        ShareDestination?.Invoke(destinationPosition, EventArgs.Empty);
+        base.TriggerRescueEvent();
     }
 }
