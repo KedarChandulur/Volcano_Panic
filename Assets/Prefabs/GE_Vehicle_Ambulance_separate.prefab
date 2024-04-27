@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 2300008}
   - component: {fileID: 6269876357734326080}
   - component: {fileID: 6340001879309297560}
+  - component: {fileID: 1808598462185897511}
   m_Layer: 6
   m_Name: Ambulance Body
   m_TagString: Untagged
@@ -455,7 +456,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30eab96e4ba4e41428949958a59e2d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 6269876357734326080}
+--- !u!65 &1808598462185897511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.933593, y: 2.747776, z: 6.808762}
+  m_Center: {x: 0.00072455406, y: 0.3910599, z: -0.021312237}
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
