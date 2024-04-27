@@ -16,9 +16,28 @@ public class FreeFormCamera : MonoBehaviour
 
     float horizontalInput = 0.0f;
     float verticalInput = 0.0f;
+
     float mouseX = 0.0f;
     float mouseY = 0.0f;
+
     bool attachedToPlayer = false;
+
+    private void Start()
+    {
+        if(currentPlayer == null)
+        {
+            Debug.LogError("Player is not assigned, trying to assign player");
+            
+            if(GameObject.FindGameObjectWithTag("RescueVechicle").TryGetComponent<RescueVechicles>(out currentPlayer))
+            {
+                Debug.Log("Player assign successful");
+            }
+            else
+            {
+                Debug.Log("Player assign unsuccessful");
+            }
+        }
+    }
 
     void Update()
     {
@@ -29,11 +48,6 @@ public class FreeFormCamera : MonoBehaviour
                 this.transform.SetParent(null);
                 this.transform.position = cameraPosition;
                 this.transform.eulerAngles = cameraRotation;
-
-                horizontalInput = 0.0f;
-                verticalInput = 0.0f;
-                mouseX = 0.0f;
-                mouseY = 0.0f;
             }
             else
             {
@@ -68,8 +82,30 @@ public class FreeFormCamera : MonoBehaviour
                 mouseX = Input.GetAxis("Mouse X");
                 mouseY = Input.GetAxis("Mouse Y");
 
-                rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
-                transform.eulerAngles += rotation;
+                if (!Mathf.Approximately(mouseX, 0.0f) || !Mathf.Approximately(mouseY, 0.0f))
+                {
+                    //if(mouseX < -1.0f || mouseY > 1.0f)
+                    //{
+                    //    Debug.Log("mouseX: " + mouseX);
+                    //    mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f);
+                    //    Debug.Log("clamped mouseX: " + mouseX);
+                    //}
+
+                    //if (mouseY < -1.0f || mouseY > 1.0f)
+                    //{
+                    //    Debug.Log("mouseY: " + mouseY);
+                    //    mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f);
+                    //    Debug.Log("clamped mouseY: " + mouseY);
+                    //}
+
+                    mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f
+                    mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f 
+
+
+
+                    rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
+                    transform.eulerAngles += rotation;
+                }
             }
         }
     }
