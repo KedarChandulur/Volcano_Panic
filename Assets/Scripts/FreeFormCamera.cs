@@ -7,10 +7,8 @@ public class FreeFormCamera : MonoBehaviour
     private Vector3 cameraPosition;
     private Vector3 cameraRotation;
 
-    [SerializeField]
-    private float moveSpeed = 20.0f; // Speed of camera movement
-    [SerializeField]
-    private float rotateSpeed = 10.0f; // Speed of camera rotation
+    private const float moveSpeed = 20.0f;
+    private const float rotateSpeed = 10.0f;
 
     float horizontalInput;
     float verticalInput;
