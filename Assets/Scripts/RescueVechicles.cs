@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,12 +9,23 @@ public class RescueVechicles : MonoBehaviour
     void Start()
     {
         this.agent = GetComponent<NavMeshAgent>();
-        agent.SetDestination(new Vector3(234.26f, 0.0f, 142.58f));
+        RescueDestination.ShareDestination += RescueDestination_ShareDestination;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        RescueDestination.ShareDestination -= RescueDestination_ShareDestination;
+    }
+
+    private void RescueDestination_ShareDestination(object sender, System.EventArgs e)
+    {
+        if (Mathf.Approximately(agent.remainingDistance, 0.0f))
+        {
+            Debug.Log(agent.remainingDistance);
+            Debug.Log("Reached!");
+
+            Vector3 destinationPosition = (Vector3)sender;
+            agent.SetDestination(destinationPosition);
+        }
     }
 }
