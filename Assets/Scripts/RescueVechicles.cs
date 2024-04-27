@@ -3,14 +3,14 @@ using UnityEngine.AI;
 
 public class RescueVechicles : MonoBehaviour
 {
-    private enum AgentState
+    public enum AgentState
     {
         Undefined = -1,
         Initialized = 0,
-        InTransit = 1,
+        InTransit_TowardsHostage = 1,
         ReachedHostage = 2,
-        PickedUpHostage = 3,
-        ReachingDestination = 4,
+        PickedUpHostages = 3,
+        InTransit_TowardsDestination = 4,
         Rescued = 5
     }
 
@@ -25,9 +25,9 @@ public class RescueVechicles : MonoBehaviour
 
         if(agentState == AgentState.Undefined)
         {
-            agentState = AgentState.Initialized;
+            Debug.Log("Agent not Initialized, Initializing...");
 
-            Debug.Log("Agent Initialized");
+            agentState = AgentState.Initialized;
         }
     }
 
@@ -40,20 +40,18 @@ public class RescueVechicles : MonoBehaviour
     {
         BaseRescueClass baseRescue = (BaseRescueClass)sender;
 
-        Debug.Log("Destination: " + baseRescue.GetDestination());
-
-        if (agentState == AgentState.PickedUpHostage)
+        if (agentState == AgentState.PickedUpHostages)
         {
             if (baseRescue.GetType() != typeof(RescueDestination))
             {
-                Debug.Log("RescueDestination: Type didn't match.");
+                Debug.Log("You already have enough hostages.");
                 return;
             }
 
             Debug.Log("Agent is moving.");
             Debug.Log(agentState);
 
-            agentState = AgentState.InTransit;
+            agentState = AgentState.InTransit_TowardsDestination;
 
             Debug.Log(agentState);
 
@@ -64,18 +62,28 @@ public class RescueVechicles : MonoBehaviour
         {
             if (baseRescue.GetType() != typeof(RescueNeeded))
             {
-                Debug.Log("RescueNeeded: Type didn't match.");
+                Debug.Log("First Rescue some hostages.");
                 return;
             }
 
             Debug.Log("Agent is moving.");
             Debug.Log(agentState);
 
-            agentState = AgentState.InTransit;
+            agentState = AgentState.InTransit_TowardsHostage;
 
             Debug.Log(agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
+    }
+
+    public AgentState GetAgentState()
+    {
+        return agentState;
+    }
+
+    public void SetAgentState(AgentState value)
+    {
+        this.agentState = value;
     }
 }
