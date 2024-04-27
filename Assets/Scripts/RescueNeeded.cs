@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class RescueNeeded : BaseRescueClass
@@ -13,13 +12,11 @@ public class RescueNeeded : BaseRescueClass
         High = 50
     }
 
-    public static event EventHandler Hostage_RescueDestination;
     public HostageDensity hostageDensity;
 
     [SerializeField]
     private uint hostageCount = (uint)HostageDensity.Undefined;
 
-    // Start is called before the first frame update
     void Start()
     {
         if(hostageDensity == HostageDensity.Undefined)

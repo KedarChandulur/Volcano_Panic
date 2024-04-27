@@ -1,10 +1,7 @@
-using System;
 using UnityEngine;
 
 public class RescueDestination : BaseRescueClass
 {
-    public static event EventHandler Share_RescueDestination;
-
     public void Start()
     {
         if (this.transform.childCount != 1)

@@ -17,7 +17,6 @@ public class RescueVechicles : MonoBehaviour
     NavMeshAgent agent;
     AgentState agentState = AgentState.Undefined;
 
-    // Start is called before the first frame update
     void Start()
     {
         this.agent = GetComponent<NavMeshAgent>();
