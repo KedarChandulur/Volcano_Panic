@@ -44,6 +44,12 @@ public class RescueVechicles : MonoBehaviour
 
         if (agentState == AgentState.PickedUpHostage)
         {
+            if (baseRescue.GetType() != typeof(RescueDestination))
+            {
+                Debug.Log("RescueDestination: Type didn't match.");
+                return;
+            }
+
             Debug.Log("Agent is moving.");
             Debug.Log(agentState);
 
@@ -56,6 +62,12 @@ public class RescueVechicles : MonoBehaviour
 
         if (agentState == AgentState.Rescued || agentState == AgentState.Initialized)
         {
+            if (baseRescue.GetType() != typeof(RescueNeeded))
+            {
+                Debug.Log("RescueNeeded: Type didn't match.");
+                return;
+            }
+
             Debug.Log("Agent is moving.");
             Debug.Log(agentState);
 
