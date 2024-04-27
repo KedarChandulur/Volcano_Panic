@@ -40,28 +40,31 @@ public class FreeFormCamera : MonoBehaviour
             attachedToPlayer = !attachedToPlayer;
         }
 
-        // Camera Movement
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-
-        if (!Mathf.Approximately(horizontalInput, 0.0f) || !Mathf.Approximately(verticalInput, 0.0f))
+        if (!attachedToPlayer)
         {
-            Debug.Log(horizontalInput);
-            Debug.Log(verticalInput);
+            // Camera Movement
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
 
-            Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-            Vector3 moveVector = transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
-            transform.position += moveVector;
-        }
+            if (!Mathf.Approximately(horizontalInput, 0.0f) || !Mathf.Approximately(verticalInput, 0.0f))
+            {
+                Debug.Log(horizontalInput);
+                Debug.Log(verticalInput);
 
-        // Camera Rotation
-        if (Input.GetMouseButton(1))
-        {
-            mouseX = Input.GetAxis("Mouse X");
-            mouseY = Input.GetAxis("Mouse Y");
+                Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+                Vector3 moveVector = transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime;
+                transform.position += moveVector;
+            }
 
-            Vector3 rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
-            transform.eulerAngles += rotation;
+            // Camera Rotation
+            if (Input.GetMouseButton(1))
+            {
+                mouseX = Input.GetAxis("Mouse X");
+                mouseY = Input.GetAxis("Mouse Y");
+
+                Vector3 rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
+                transform.eulerAngles += rotation;
+            }
         }
     }
 }
