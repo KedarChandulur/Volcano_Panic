@@ -18,11 +18,16 @@ public class RescueEventHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("RescueVechicle"))
+        Debug.Log("Triggered");
+
+        if (other.gameObject.CompareTag("RescueVechicle"))
         {
             RescueVechicles rescueVechicle = other.GetComponent<RescueVechicles>();
 
-            if (this.GetType() == typeof(RescueDestination) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsDestination)
+            Debug.Log(rescueClassRef.GetType());
+            Debug.Log(rescueVechicle.GetAgentState());
+
+            if (rescueClassRef.GetType() == typeof(RescueDestination) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsDestination)
             {
                 Debug.Log(rescueVechicle.GetAgentState());
 
@@ -31,7 +36,7 @@ public class RescueEventHandler : MonoBehaviour
                 Debug.Log(rescueVechicle.GetAgentState());
             }
 
-            if (this.GetType() == typeof(RescueNeeded) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage)
+            if (rescueClassRef.GetType() == typeof(RescueNeeded) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage)
             {
                 Debug.Log(rescueVechicle.GetAgentState());
 
