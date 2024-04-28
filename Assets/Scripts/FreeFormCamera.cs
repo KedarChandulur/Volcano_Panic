@@ -27,8 +27,8 @@ public class FreeFormCamera : MonoBehaviour
         if(currentPlayer == null)
         {
             Debug.LogError("Player is not assigned, trying to assign player");
-            
-            if(GameObject.FindGameObjectWithTag("RescueVechicle").TryGetComponent<RescueVechicles>(out currentPlayer))
+
+            if (GameObject.FindGameObjectWithTag("RescueVechicle").TryGetComponent<RescueVechicles>(out currentPlayer))
             {
                 Debug.Log("Player assign successful");
             }
@@ -84,24 +84,8 @@ public class FreeFormCamera : MonoBehaviour
 
                 if (!Mathf.Approximately(mouseX, 0.0f) || !Mathf.Approximately(mouseY, 0.0f))
                 {
-                    //if(mouseX < -1.0f || mouseY > 1.0f)
-                    //{
-                    //    Debug.Log("mouseX: " + mouseX);
-                    //    mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f);
-                    //    Debug.Log("clamped mouseX: " + mouseX);
-                    //}
-
-                    //if (mouseY < -1.0f || mouseY > 1.0f)
-                    //{
-                    //    Debug.Log("mouseY: " + mouseY);
-                    //    mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f);
-                    //    Debug.Log("clamped mouseY: " + mouseY);
-                    //}
-
                     mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f
                     mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f 
-
-
 
                     rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
                     transform.eulerAngles += rotation;
