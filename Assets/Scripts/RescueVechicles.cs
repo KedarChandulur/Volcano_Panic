@@ -25,7 +25,7 @@ public class RescueVechicles : MonoBehaviour
 
         if(agentState == AgentState.Undefined)
         {
-            Debug.Log("Agent not Initialized, Initializing...");
+            //Debug.Log("Agent not Initialized, Initializing...");
 
             agentState = AgentState.Initialized;
         }
@@ -48,12 +48,9 @@ public class RescueVechicles : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Agent is moving.");
-            Debug.Log(agentState);
-
             agentState = AgentState.InTransit_TowardsDestination;
 
-            Debug.Log(agentState);
+            Debug.Log("Changing to State: " + agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
@@ -66,12 +63,9 @@ public class RescueVechicles : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Agent is moving.");
-            Debug.Log(agentState);
-
             agentState = AgentState.InTransit_TowardsHostage;
 
-            Debug.Log(agentState);
+            Debug.Log("Changing to State: " + agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
