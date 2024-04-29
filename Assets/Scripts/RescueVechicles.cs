@@ -35,11 +35,18 @@ public class RescueVechicles : MonoBehaviour
         }
 
         BaseRescueClass.RescueEvent += BaseRescueClass_RescueEvent;
+        UIManager.OnRescueButtonClickedEvent += UIManager_OnRescueButtonClickedEvent;
     }
 
     private void OnDestroy()
     {
         BaseRescueClass.RescueEvent -= BaseRescueClass_RescueEvent;
+        UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
+    }
+
+    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
+    {
+        this.SetAgentState(AgentState.PickedUpHostages);
     }
 
     private void BaseRescueClass_RescueEvent(object sender, int _targetChildID)

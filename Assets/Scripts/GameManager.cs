@@ -3,8 +3,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     UIManager uI_Manager;
-    public float gameTimeInSeconds = 120f;
+    [SerializeField]
+    private float gameTimeInSeconds = 120f;
     private float currentTime;
+    [SerializeField]
+    private uint totalHostageCount = 0;
+    private uint hostagesLeft = 0;
     private bool isGameOver = false;
 
     private void Start()
@@ -17,7 +21,29 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        uI_Manager.UpdateTimerDisplay(currentTime);
+        uI_Manager.InitTotalTime(gameTimeInSeconds);
+        uI_Manager.InitTotalHostagesCount(totalHostageCount);
+
+        hostagesLeft = totalHostageCount;
+
+        UIManager.OnRescueButtonClickedEvent += UIManager_OnRescueButtonClickedEvent;
+        RescueEventHandler.OnReachingDestination += RescueEventHandler_OnReachingDestination;
+    }
+
+    private void OnDestroy()
+    {
+        UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
+        RescueEventHandler.OnReachingDestination -= RescueEventHandler_OnReachingDestination;
+    }
+
+    private void RescueEventHandler_OnReachingDestination(object sender, System.EventArgs e)
+    {
+        uI_Manager.UpdateScore(hostagesLeft);
+    }
+
+    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
+    {
+        this.DecrementHostageCount(e);
     }
 
     private void Update()
@@ -26,6 +52,16 @@ public class GameManager : MonoBehaviour
         {
             UpdateTimer();
         }
+    }
+
+    public void UpdateTotalHostageCount_Init(uint hostageCount)
+    {
+        totalHostageCount += hostageCount;
+    }
+
+    public void DecrementHostageCount(uint hostageCount)
+    {
+        hostagesLeft -= hostageCount;
     }
 
     private void UpdateTimer()
@@ -45,5 +81,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         Debug.Log("Game Over!");
+
+        Time.timeScale = 0f;
     }
 }

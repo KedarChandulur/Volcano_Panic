@@ -1,23 +1,37 @@
+using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     TMP_InputField inputField;
     UnityEngine.UI.Button button;
-    TextMeshProUGUI textMeshProUGUI;
+
+    TextMeshProUGUI hostageSaveText;
+    TextMeshProUGUI timerText;
+    TextMeshProUGUI scoreText;
+
     GameObject errorTextGO;
-    RescueVechicles rescueVechicle_Ref;
     RescueNeeded rescueNeeded_Ref;
 
-    TextMeshProUGUI timerText;
+    public static event EventHandler<uint> OnRescueButtonClickedEvent;
+
+    float totalTime = 0.0f;
+    uint totalHostages = 0;
 
     private void Awake()
     {
         if (!this.transform.GetChild(1).TryGetComponent<TextMeshProUGUI>(out timerText))
         {
             Debug.LogError("Timer Text Ref not set");
+            return;
+        }
+
+        if(!this.transform.GetChild(2).TryGetComponent<TextMeshProUGUI>(out scoreText))
+        {
+            Debug.LogError("Score Text Ref not set");
             return;
         }
     }
@@ -27,7 +41,7 @@ public class UIManager : MonoBehaviour
         Transform bg_Gameobject = this.transform.GetChild(0);
         bg_Gameobject.gameObject.SetActive(false);
 
-        if (!bg_Gameobject.GetChild(0).TryGetComponent<TextMeshProUGUI>(out textMeshProUGUI))
+        if (!bg_Gameobject.GetChild(0).TryGetComponent<TextMeshProUGUI>(out hostageSaveText))
         {
             Debug.LogError("Text element not set");
             return;
@@ -63,37 +77,59 @@ public class UIManager : MonoBehaviour
         button.onClick.AddListener(OnRescueButtonClicked);
     }
 
-    public void UpdateTimerDisplay(float currentTime)
-    {
-        int minutes = Mathf.FloorToInt(currentTime / 60f);
-        int seconds = Mathf.FloorToInt(currentTime % 60f);
-
-        timerText.text = "Time Left: " + string.Format("{0:00}:{1:00}", minutes, seconds);
-    }
-
     private void OnDestroy()
     {
         RescueEventHandler.OnReachingHostage -= RescueEventHandler_OnReachingHostage;
         button.onClick.RemoveAllListeners();
     }
 
-    private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.CustomEventArgs customEventArgs)
+    public void InitTotalTime(float _totalTime)
     {
-        rescueVechicle_Ref = null;
+        totalTime = _totalTime;
+
+        UpdateTimerDisplay(totalTime);
+    }
+
+    public void InitTotalHostagesCount(uint _totalHostagesCount)
+    {
+        totalHostages = _totalHostagesCount;
+
+        UpdateScore(0);
+    }
+
+    public void UpdateTimerDisplay(float currentTime)
+    {
+        int minutes = Mathf.FloorToInt(currentTime / 60f);
+        int seconds = Mathf.FloorToInt(currentTime % 60f);
+
+        if(Mathf.FloorToInt(currentTime % 60f) == 30)
+        {
+            timerText.color = Color.red;
+        }
+
+        timerText.text = "Time Left: " + string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void UpdateScore(uint hostagesSaved)
+    {
+        scoreText.text = "Hostages Saved: " + (totalHostages - hostagesSaved) + "\nHostages Left: " + hostagesSaved;
+    }
+
+    private void RescueEventHandler_OnReachingHostage(object sender, RescueNeeded rescueNeeded)
+    {
         rescueNeeded_Ref = null;
 
-        if (customEventArgs.rescueNeeded.GetHostageCount() < 1)
+        if (rescueNeeded.GetHostageCount() < 1)
         {
             return;
         }
 
-        rescueVechicle_Ref = customEventArgs.rescueVechicle;
-        rescueNeeded_Ref = customEventArgs.rescueNeeded;
+        rescueNeeded_Ref = rescueNeeded;
 
         button.interactable = true;
-        textMeshProUGUI.transform.parent.gameObject.SetActive(true);
+        hostageSaveText.transform.parent.gameObject.SetActive(true);
 
-        textMeshProUGUI.text = "How many hostages you want to save?\nHostages found at site: " + rescueNeeded_Ref.GetHostageCount();
+        hostageSaveText.text = "How many hostages you want to save?\nHostages found at site: " + rescueNeeded_Ref.GetHostageCount();
     }
 
     public void OnRescueButtonClicked()
@@ -103,7 +139,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (!int.TryParse(inputField.text, out int hostageCount))
+        if (!uint.TryParse(inputField.text, out uint hostageCount))
         {
             Debug.Log("int Parse not Successful");
             inputField.text = string.Empty;
@@ -120,10 +156,9 @@ public class UIManager : MonoBehaviour
         }
 
         button.interactable = false;
-        textMeshProUGUI.transform.parent.gameObject.SetActive(false);
+        hostageSaveText.transform.parent.gameObject.SetActive(false);
 
-        rescueNeeded_Ref.DecrementHostageCount(hostageCount);
-        rescueVechicle_Ref.SetAgentState(RescueVechicles.AgentState.PickedUpHostages);
+        OnRescueButtonClickedEvent?.Invoke(this, hostageCount);
 
         inputField.text = string.Empty;
     }

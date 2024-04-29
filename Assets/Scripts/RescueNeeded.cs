@@ -4,7 +4,7 @@ using static RescueNeeded;
 
 public class RescueNeeded : BaseRescueClass
 {
-    public enum HostageDensity : int
+    public enum HostageDensity : uint
     {
         Undefined = 0,
         VeryLow = 10,
@@ -17,7 +17,25 @@ public class RescueNeeded : BaseRescueClass
     public HostageDensity hostageDensity;
 
     [SerializeField]
-    private int hostageCount = (int)HostageDensity.Undefined;
+    private uint localHostageCount = (uint)HostageDensity.Undefined;
+
+    private void Awake()
+    {
+        if (hostageDensity == HostageDensity.Undefined)
+        {
+            Debug.LogError("Did you setup hostage data correctly?");
+        }
+
+        if (localHostageCount == 0)
+        {
+            localHostageCount = (uint)hostageDensity;
+        }
+
+        if(GameObject.FindGameObjectWithTag("GameController").TryGetComponent<GameManager>(out GameManager gameManager))
+        {
+            gameManager.UpdateTotalHostageCount_Init(localHostageCount);
+        }
+    }
 
     void Start()
     {
@@ -52,24 +70,26 @@ public class RescueNeeded : BaseRescueClass
             Debug.LogError("Not able to set the arrow color");
         }
 
-        if (hostageDensity == HostageDensity.Undefined)
-        {
-            Debug.LogError("Did you setup hostage data correctly?");
-        }
-
-        if (hostageCount == 0)
-        {
-            hostageCount = (int)hostageDensity;
-        }
+        UIManager.OnRescueButtonClickedEvent += UIManager_OnRescueButtonClickedEvent;
     }
 
-    public int GetHostageCount()
+    private void OnDestroy()
     {
-        return hostageCount;
+        UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
     }
 
-    public void DecrementHostageCount(int hostageCountToReduce)
+    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
     {
-        this.hostageCount -= hostageCountToReduce;
+        this.DecrementHostageCount(e);
+    }
+
+    public uint GetHostageCount()
+    {
+        return localHostageCount;
+    }
+
+    public void DecrementHostageCount(uint hostageCountToReduce)
+    {
+        this.localHostageCount -= hostageCountToReduce;
     }
 }
