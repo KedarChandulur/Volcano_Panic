@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using UnityEngine;
-
 public class BaseRescueClass : UnityEngine.MonoBehaviour
 {
     public static event System.EventHandler<int> RescueEvent;
@@ -40,8 +37,7 @@ public class BaseRescueClass : UnityEngine.MonoBehaviour
 
             destinationPosition = childTransform.position;
 
-            MeshRenderer meshRenderer = null;
-            if (childTransform.GetChild(0).TryGetComponent<UnityEngine.MeshRenderer>(out meshRenderer))
+            if (childTransform.GetChild(0).TryGetComponent<UnityEngine.MeshRenderer>(out UnityEngine.MeshRenderer meshRenderer))
             {
                 arrow = meshRenderer.material;
             }

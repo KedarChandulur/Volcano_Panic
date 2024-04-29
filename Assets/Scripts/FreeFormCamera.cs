@@ -65,7 +65,6 @@ public class FreeFormCamera : MonoBehaviour
 
         if (!attachedToPlayer)
         {
-            // Camera Movement
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
 
@@ -78,7 +77,6 @@ public class FreeFormCamera : MonoBehaviour
 
         }
 
-        // Camera Rotation
         if (Input.GetMouseButton(1))
         {
             mouseX = Input.GetAxis("Mouse X");

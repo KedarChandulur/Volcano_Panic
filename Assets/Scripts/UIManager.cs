@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -14,8 +13,6 @@ public class UIManager : MonoBehaviour
 
     TextMeshProUGUI timerText;
 
-    //public static event EventHandler OnRescueButtonClickEvent;
-
     private void Awake()
     {
         if (!this.transform.GetChild(1).TryGetComponent<TextMeshProUGUI>(out timerText))
@@ -25,7 +22,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         Transform bg_Gameobject = this.transform.GetChild(0);
@@ -53,7 +49,6 @@ public class UIManager : MonoBehaviour
 
         if (errorTextGO)
         {
-            //Debug.Log("Button element set");
             errorTextGO.SetActive(false);
         }
         else

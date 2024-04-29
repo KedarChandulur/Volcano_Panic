@@ -3,7 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     UIManager uI_Manager;
-    public float gameTimeInSeconds = 120f; // 2 minutes in seconds
+    public float gameTimeInSeconds = 120f;
     private float currentTime;
     private bool isGameOver = false;
 
@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         isGameOver = true;
-        // Add your end game logic here
         Debug.Log("Game Over!");
     }
 }

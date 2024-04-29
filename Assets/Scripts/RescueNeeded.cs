@@ -63,11 +63,6 @@ public class RescueNeeded : BaseRescueClass
         }
     }
 
-    //private void OnMouseDown()
-    //{
-    //    base.TriggerRescueEvent();
-    //}
-
     public int GetHostageCount()
     {
         return hostageCount;

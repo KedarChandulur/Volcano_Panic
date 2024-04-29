@@ -5,14 +5,11 @@ public class RescueEventHandler : MonoBehaviour
 {
     public class CustomEventArgs : EventArgs
     {
-        //public object Sender { get; }
         public RescueVechicles rescueVechicle { get; }
         public RescueNeeded rescueNeeded { get; }
 
-        //public CustomEventArgs(object sender, RescueVechicles _rescueVechicle, RescueNeeded _rescueNeeded)
         public CustomEventArgs(RescueVechicles _rescueVechicle, RescueNeeded _rescueNeeded)
         {
-            //Sender = sender;
             rescueVechicle = _rescueVechicle;
             rescueNeeded = _rescueNeeded;
         }
@@ -21,7 +18,6 @@ public class RescueEventHandler : MonoBehaviour
     private BaseRescueClass rescueClassRef;
     public static event EventHandler<CustomEventArgs> OnReachingHostage;
 
-    // Start is called before the first frame update
     void Start()
     {
         rescueClassRef = GetComponentInParent<BaseRescueClass>();
