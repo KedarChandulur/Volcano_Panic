@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using static RescueNeeded;
 
 public class RescueNeeded : BaseRescueClass
 {
-    public enum HostageDensity : uint
+    public enum HostageDensity : int
     {
         Undefined = 0,
         VeryLow = 10,
@@ -15,31 +17,64 @@ public class RescueNeeded : BaseRescueClass
     public HostageDensity hostageDensity;
 
     [SerializeField]
-    private uint hostageCount = (uint)HostageDensity.Undefined;
+    private int hostageCount = (int)HostageDensity.Undefined;
 
     void Start()
     {
-        if(hostageDensity == HostageDensity.Undefined)
+        if (base.Initialize())
+        {
+            switch(hostageDensity)
+            {
+                case HostageDensity.VeryLow:
+                    arrow.color = Color.cyan;
+                    break;
+                case HostageDensity.Low:
+                    arrow.color = Color.blue;
+                    break;
+                case HostageDensity.Normal:
+                    arrow.color = Color.white;
+                    break;
+                case HostageDensity.Medium:
+                    arrow.color = Color.yellow;
+                    break;
+                case HostageDensity.High:
+                    arrow.color = Color.red;
+                    break;
+                case HostageDensity.Undefined:
+                default:
+                    arrow.color = Color.grey;
+                    Debug.LogError("Error setting the arrow color.");
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogError("Not able to set the arrow color");
+        }
+
+        if (hostageDensity == HostageDensity.Undefined)
         {
             Debug.LogError("Did you setup hostage data correctly?");
         }
 
         if (hostageCount == 0)
         {
-            hostageCount = (uint)hostageDensity;
+            hostageCount = (int)hostageDensity;
         }
-
-        if (this.transform.childCount != 1)
-        {
-            Debug.LogError("Did you setup destination object correctly?");
-            return;
-        }
-
-        destinationPosition = this.transform.GetChild(0).transform.position;
     }
 
-    private void OnMouseDown()
+    //private void OnMouseDown()
+    //{
+    //    base.TriggerRescueEvent();
+    //}
+
+    public int GetHostageCount()
     {
-        base.TriggerRescueEvent();
+        return hostageCount;
+    }
+
+    public void DecrementHostageCount(int hostageCountToReduce)
+    {
+        this.hostageCount -= hostageCountToReduce;
     }
 }

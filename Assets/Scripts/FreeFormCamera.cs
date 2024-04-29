@@ -76,21 +76,23 @@ public class FreeFormCamera : MonoBehaviour
                 transform.position += moveVector;
             }
 
-            // Camera Rotation
-            if (Input.GetMouseButton(1))
+        }
+
+        // Camera Rotation
+        if (Input.GetMouseButton(1))
+        {
+            mouseX = Input.GetAxis("Mouse X");
+            mouseY = Input.GetAxis("Mouse Y");
+
+            if (!Mathf.Approximately(mouseX, 0.0f) || !Mathf.Approximately(mouseY, 0.0f))
             {
-                mouseX = Input.GetAxis("Mouse X");
-                mouseY = Input.GetAxis("Mouse Y");
+                mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f
+                mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f 
 
-                if (!Mathf.Approximately(mouseX, 0.0f) || !Mathf.Approximately(mouseY, 0.0f))
-                {
-                    mouseX = Mathf.Clamp(mouseX, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f
-                    mouseY = Mathf.Clamp(mouseY, -1.0f, 1.0f); // Bugs on game window focus. Goes either more than 1.0f or less then -1.0f 
-
-                    rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
-                    transform.eulerAngles += rotation;
-                }
+                rotation = new Vector3(-mouseY, mouseX, 0f) * rotateSpeed;
+                transform.eulerAngles += rotation;
             }
         }
+        
     }
 }

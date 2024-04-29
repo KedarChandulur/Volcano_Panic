@@ -16,10 +16,12 @@ public class RescueVechicles : MonoBehaviour
 
     NavMeshAgent agent;
     AgentState agentState = AgentState.Undefined;
+    int targetChildID;
 
     void Start()
     {
         this.agent = GetComponent<NavMeshAgent>();
+        this.agent.autoRepath = true;
 
         BaseRescueClass.RescueEvent += BaseRescueClass_RescueEvent;
 
@@ -36,7 +38,7 @@ public class RescueVechicles : MonoBehaviour
         BaseRescueClass.RescueEvent -= BaseRescueClass_RescueEvent;
     }
 
-    private void BaseRescueClass_RescueEvent(object sender, System.EventArgs e)
+    private void BaseRescueClass_RescueEvent(object sender, int _targetChildID)
     {
         BaseRescueClass baseRescue = (BaseRescueClass)sender;
 
@@ -47,6 +49,8 @@ public class RescueVechicles : MonoBehaviour
                 Debug.Log("You already have enough hostages.");
                 return;
             }
+
+            targetChildID = _targetChildID;
 
             agentState = AgentState.InTransit_TowardsDestination;
 
@@ -63,12 +67,19 @@ public class RescueVechicles : MonoBehaviour
                 return;
             }
 
+            targetChildID = _targetChildID;
+
             agentState = AgentState.InTransit_TowardsHostage;
 
             Debug.Log("Changing to State: " + agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
+    }
+
+    public int GetTargetChildID()
+    {
+        return targetChildID;
     }
 
     public AgentState GetAgentState()
@@ -79,5 +90,18 @@ public class RescueVechicles : MonoBehaviour
     public void SetAgentState(AgentState value)
     {
         this.agentState = value;
+    }
+
+    public void StopAgent()
+    {
+        if(agent != null)
+        {
+            Debug.Log(agent.hasPath);
+
+            agent.isStopped = true;
+            agent.ResetPath();
+
+            Debug.Log(agent.hasPath);
+        }
     }
 }

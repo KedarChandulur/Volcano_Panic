@@ -4,17 +4,13 @@ public class RescueDestination : BaseRescueClass
 {
     public void Start()
     {
-        if (this.transform.childCount != 1)
+        if(base.Initialize())
         {
-            Debug.LogError("Did you setup destination object correctly?");
-            return;
+            arrow.color = Color.green;
         }
-
-        destinationPosition = this.transform.GetChild(0).transform.position;
-    }
-
-    private void OnMouseDown()
-    {
-        base.TriggerRescueEvent();
+        else
+        {
+            Debug.LogError("Not able to set the arrow color");
+        }
     }
 }
