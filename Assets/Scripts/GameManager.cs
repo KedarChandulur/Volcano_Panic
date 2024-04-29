@@ -11,11 +11,7 @@ public class GameManager : MonoBehaviour
     {
         currentTime = gameTimeInSeconds;
 
-        if(GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uI_Manager))
-        {
-            Debug.Log("UI Manager set");
-        }
-        else
+        if(!GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uI_Manager))
         {
             Debug.LogError("UI Manager not set");
             return;

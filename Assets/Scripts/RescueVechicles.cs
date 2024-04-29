@@ -20,17 +20,21 @@ public class RescueVechicles : MonoBehaviour
 
     void Start()
     {
-        this.agent = GetComponent<NavMeshAgent>();
-        this.agent.autoRepath = true;
-
-        BaseRescueClass.RescueEvent += BaseRescueClass_RescueEvent;
-
-        if(agentState == AgentState.Undefined)
+        if (agentState == AgentState.Undefined)
         {
-            //Debug.Log("Agent not Initialized, Initializing...");
+            if(!this.TryGetComponent<NavMeshAgent>(out this.agent))
+            {
+                Debug.LogError("Error setting the agent.");
+                return;
+            }
+
+            this.agent.autoRepath = true;
+            this.agent.speed = 7.0f;
 
             agentState = AgentState.Initialized;
         }
+
+        BaseRescueClass.RescueEvent += BaseRescueClass_RescueEvent;
     }
 
     private void OnDestroy()
@@ -54,7 +58,7 @@ public class RescueVechicles : MonoBehaviour
 
             agentState = AgentState.InTransit_TowardsDestination;
 
-            Debug.Log("Changing to State: " + agentState);
+            Debug.Log(agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
@@ -71,7 +75,7 @@ public class RescueVechicles : MonoBehaviour
 
             agentState = AgentState.InTransit_TowardsHostage;
 
-            Debug.Log("Changing to State: " + agentState);
+            Debug.Log(agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }
@@ -90,18 +94,23 @@ public class RescueVechicles : MonoBehaviour
     public void SetAgentState(AgentState value)
     {
         this.agentState = value;
+
+        if(this.agentState == AgentState.PickedUpHostages)
+        {
+            this.agent.speed = 5.0f;
+        }
+        else if (this.agentState == AgentState.Rescued)
+        {
+            this.agent.speed = 7.0f;
+        }
     }
 
     public void StopAgent()
     {
         if(agent != null)
         {
-            Debug.Log(agent.hasPath);
-
             agent.isStopped = true;
             agent.ResetPath();
-
-            Debug.Log(agent.hasPath);
         }
     }
 }

@@ -18,11 +18,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (this.transform.GetChild(1).TryGetComponent<TextMeshProUGUI>(out timerText))
-        {
-            Debug.Log("Timer Text Ref set");
-        }
-        else
+        if (!this.transform.GetChild(1).TryGetComponent<TextMeshProUGUI>(out timerText))
         {
             Debug.LogError("Timer Text Ref not set");
             return;
@@ -35,31 +31,19 @@ public class UIManager : MonoBehaviour
         Transform bg_Gameobject = this.transform.GetChild(0);
         bg_Gameobject.gameObject.SetActive(false);
 
-        if (bg_Gameobject.GetChild(0).TryGetComponent<TextMeshProUGUI>(out textMeshProUGUI))
-        {
-            //Debug.Log("Text element set");
-        }
-        else
+        if (!bg_Gameobject.GetChild(0).TryGetComponent<TextMeshProUGUI>(out textMeshProUGUI))
         {
             Debug.LogError("Text element not set");
             return;
         }
 
-        if(bg_Gameobject.GetChild(1).TryGetComponent<TMP_InputField>(out inputField))
-        {
-            //Debug.Log("Input Field element set");
-        }
-        else
+        if (!bg_Gameobject.GetChild(1).TryGetComponent<TMP_InputField>(out inputField))
         {
             Debug.LogError("Input Field element not set");
             return;
         }
 
-        if (bg_Gameobject.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out button))
-        {
-            //Debug.Log("Button element set");
-        }
-        else
+        if (!bg_Gameobject.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out button))
         {
             Debug.LogError("Button element not set");
             return;
@@ -98,18 +82,18 @@ public class UIManager : MonoBehaviour
         button.onClick.RemoveAllListeners();
     }
 
-    private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.CustomEventArgs e)
+    private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.CustomEventArgs customEventArgs)
     {
         rescueVechicle_Ref = null;
         rescueNeeded_Ref = null;
 
-        if (e.rescueNeeded.GetHostageCount() < 1)
+        if (customEventArgs.rescueNeeded.GetHostageCount() < 1)
         {
             return;
         }
 
-        rescueVechicle_Ref = e.rescueVechicle;
-        rescueNeeded_Ref = e.rescueNeeded;
+        rescueVechicle_Ref = customEventArgs.rescueVechicle;
+        rescueNeeded_Ref = customEventArgs.rescueNeeded;
 
         button.interactable = true;
         textMeshProUGUI.transform.parent.gameObject.SetActive(true);
@@ -124,11 +108,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (int.TryParse(inputField.text, out int hostageCount))
-        {
-            Debug.Log("int Parse Successful: " + hostageCount);
-        }
-        else
+        if (!int.TryParse(inputField.text, out int hostageCount))
         {
             Debug.Log("int Parse not Successful");
             inputField.text = string.Empty;
@@ -136,7 +116,8 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if(hostageCount < 0 || hostageCount > rescueNeeded_Ref.GetHostageCount())
+
+        if (hostageCount < 0 || hostageCount > rescueNeeded_Ref.GetHostageCount())
         {
             inputField.text = string.Empty;
             StartCoroutine(ShowErrorText());

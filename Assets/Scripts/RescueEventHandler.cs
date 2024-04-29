@@ -35,14 +35,9 @@ public class RescueEventHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
-
         if (other.gameObject.CompareTag("RescueVechicle"))
         {
             RescueVechicles rescueVechicle = other.GetComponent<RescueVechicles>();
-
-            Debug.Log(rescueClassRef.GetType());
-            Debug.Log(rescueVechicle.GetAgentState());
 
             if(rescueClassRef.GetChildObjectId() != rescueVechicle.GetTargetChildID())
             {
