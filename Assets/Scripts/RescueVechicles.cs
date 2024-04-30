@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class RescueVechicles : MonoBehaviour
 {
@@ -14,13 +15,14 @@ public class RescueVechicles : MonoBehaviour
         Rescued = 5
     }
 
-    [SerializeField]
-    private uint vechicleCapacity = 20;
-    private uint currentVechicleCapacity = 0;
+    Scene currentActiveScene;
 
     NavMeshAgent agent;
     AgentState agentState = AgentState.Undefined;
     int targetChildID;
+
+    private uint vechicleCapacity = 20;
+    private uint currentVechicleCapacity = 0;
 
     void Start()
     {
@@ -40,12 +42,24 @@ public class RescueVechicles : MonoBehaviour
 
         BaseRescueClass.RescueEvent += BaseRescueClass_RescueEvent;
         UIManager.OnRescueButtonClickedEvent += UIManager_OnRescueButtonClickedEvent;
+        //SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+
+        //agent.ResetPath();
+
+        //this.transform.position = Vector3.zero;
+        //this.transform.eulerAngles = Vector3.zero;
+
+        //this.transform.position = new Vector3(GameManager.instance.GetPlayerPosition().x, GameManager.instance.GetPlayerPosition().y, GameManager.instance.GetPlayerPosition().z);
+        //this.transform.eulerAngles = new Vector3(GameManager.instance.GetPlayerRotation().x, GameManager.instance.GetPlayerRotation().y, GameManager.instance.GetPlayerRotation().z);
+
+        //agent.ResetPath();
     }
 
     private void OnDestroy()
     {
         BaseRescueClass.RescueEvent -= BaseRescueClass_RescueEvent;
         UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
+        //SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
     }
 
     private void UIManager_OnRescueButtonClickedEvent(object sender, UIManager.Custom_UIManager_EventArgs e)
@@ -139,4 +153,14 @@ public class RescueVechicles : MonoBehaviour
         this.agent.speed = 7.0f;
         currentVechicleCapacity = vechicleCapacity;
     }
+
+    //private void SceneManager_activeSceneChanged(Scene arg0, Scene changedTo)
+    //{
+    //    currentActiveScene = changedTo;
+
+    //    if(currentActiveScene.buildIndex == 1)
+    //    {   
+
+    //    }
+    //}
 }

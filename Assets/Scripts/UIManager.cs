@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using TMPro;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -20,20 +19,27 @@ public class UIManager : MonoBehaviour
 
     TMP_InputField inputField;
     UnityEngine.UI.Button rescueButton;
+    UnityEngine.UI.Button resumeButton_Pausemenu;
+    UnityEngine.UI.Button quitButton_Pausemenu;
 
     TextMeshProUGUI hostageSaveText;
     TextMeshProUGUI timerText;
     TextMeshProUGUI hostagesSavedText;
     TextMeshProUGUI errorText;
     TextMeshProUGUI scoreText;
+    TextMeshProUGUI hostageStatusText;
 
     RescueNeeded rescueNeeded_Ref;
     RescueVechicles rescueVechile_Ref;
+
+    GameObject pauseMenu;
 
     public static event EventHandler<Custom_UIManager_EventArgs> OnRescueButtonClickedEvent;
 
     float totalTime = 0.0f;
     uint totalHostages = 0;
+
+    bool isPaused = false;
 
     private void Awake()
     {
@@ -53,6 +59,37 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("Score Text Ref not set");
             return;
+        }
+        
+        if(!this.transform.GetChild(4).TryGetComponent<TextMeshProUGUI>(out hostageStatusText))
+        {
+            Debug.LogError("Hostage Pickup Text Ref not set");
+            return;
+        }
+        else
+        {
+            hostageStatusText.text = string.Empty;
+        }
+
+        pauseMenu = this.transform.GetChild(5).gameObject;
+
+        if(pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Error settings the pause menu gameobject.");
+        }
+
+        if(!pauseMenu.transform.GetChild(0).TryGetComponent<UnityEngine.UI.Button>(out resumeButton_Pausemenu))
+        {
+            Debug.LogError("Error settings resume button.");
+        }
+
+        if (!pauseMenu.transform.GetChild(1).TryGetComponent<UnityEngine.UI.Button>(out quitButton_Pausemenu))
+        {
+            Debug.LogError("Error settings quit button.");
         }
     }
 
@@ -93,12 +130,20 @@ public class UIManager : MonoBehaviour
 
         rescueButton.onClick.RemoveAllListeners();
         rescueButton.onClick.AddListener(OnRescueButtonClicked);
+
+        resumeButton_Pausemenu.onClick.RemoveAllListeners();
+        resumeButton_Pausemenu.onClick.AddListener(FlipPauseFunctionality);
+
+        quitButton_Pausemenu.onClick.RemoveAllListeners();
+        quitButton_Pausemenu.onClick.AddListener(QuitGame);
     }
 
     private void OnDestroy()
     {
         RescueEventHandler.OnReachingHostage -= RescueEventHandler_OnReachingHostage;
         rescueButton.onClick.RemoveAllListeners();
+        resumeButton_Pausemenu.onClick.RemoveAllListeners();
+        quitButton_Pausemenu.onClick.RemoveAllListeners();
     }
 
     public void InitTotalTime(float _totalTime)
@@ -136,6 +181,12 @@ public class UIManager : MonoBehaviour
     public void UpdateHostagesSaved(uint hostagesSaved)
     {
         hostagesSavedText.text = "Hostages Saved: " + hostagesSaved + "\nHostages Left: " + (totalHostages - hostagesSaved);
+
+        if(hostagesSaved > 0)
+        {
+            hostageStatusText.color = Color.green;
+            StartCoroutine(ShowHostageStatusText("Hostages Rescued.")); 
+        }
     }
 
     public void UpdateScore(uint currentScore)
@@ -208,6 +259,9 @@ public class UIManager : MonoBehaviour
         ScoreManager.instance.IncreaseHostageSaveCount((uint)hostageCount);
         rescueVechile_Ref.DecrementCurrentVechicleCapacity((uint)hostageCount);
 
+        hostageStatusText.color = rescueNeeded_Ref.GetColorBasedOnPriority();
+        StartCoroutine(ShowHostageStatusText("Picked up Hostages."));
+
         OnRescueButtonClickedEvent?.Invoke(this, new Custom_UIManager_EventArgs((uint)hostageCount, rescueNeeded_Ref.GetChildObjectId()));
 
         inputField.text = string.Empty;
@@ -220,5 +274,35 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         errorText.text = string.Empty;
+    }
+
+    private IEnumerator ShowHostageStatusText(string _text)
+    {
+        hostageStatusText.text = _text;
+
+        yield return new WaitForSeconds(2f);
+
+        hostageStatusText.text = string.Empty;
+    }
+
+    public void FlipPauseFunctionality()
+    {
+        isPaused = !isPaused;
+
+        pauseMenu.SetActive(isPaused);
+
+        if(isPaused)
+        {
+            Time.timeScale = 0.0f;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
+    }
+
+    private void QuitGame()
+    {
+        Application.Quit();
     }
 }

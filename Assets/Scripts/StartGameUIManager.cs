@@ -7,6 +7,8 @@ public class StartGameUIManager : MonoBehaviour
     UnityEngine.UI.Button quitGamebutton;
 
     UnityEngine.UI.Button controlsButton;
+    UnityEngine.UI.Button instructionsButton;
+    UnityEngine.UI.Button scoresButton;
     UnityEngine.UI.Button optionsBackButton;
 
     UnityEngine.UI.Button controlsBackButton;
@@ -16,10 +18,24 @@ public class StartGameUIManager : MonoBehaviour
     UnityEngine.UI.Button hardDifficultyButton;
     UnityEngine.UI.Button startMenuBackButton;
 
+    UnityEngine.UI.Button instructionsMenuBackButton;
+
+    TMPro.TextMeshProUGUI highScoreText;
+    UnityEngine.UI.Button scoresMenuBackButton;
+
+    //UnityEngine.UI.Button drugStoreButton;
+    //UnityEngine.UI.Button stadiumButton;
+    //UnityEngine.UI.Button factoryButton;
+    //UnityEngine.UI.Button playersSpawnMenuBackButton;
+
+
     GameObject gameStartScreen;
     GameObject optionsScreen;
     GameObject controlsScreen;
     GameObject startGameMenu;
+    GameObject instructionsMenu;
+    GameObject scoresMenu;
+    //GameObject playersSpawnMenu;
 
     void Start()
     {
@@ -71,6 +87,42 @@ public class StartGameUIManager : MonoBehaviour
             startGameMenu.SetActive(false);
         }
 
+        instructionsMenu = this.transform.GetChild(4).gameObject;
+
+        if (!instructionsMenu)
+        {
+            Debug.LogError("instructionsMenu Object element not set");
+            return;
+        }
+        else
+        {
+            instructionsMenu.SetActive(false);
+        }
+
+        scoresMenu = this.transform.GetChild(5).gameObject;
+
+        if (!scoresMenu)
+        {
+            Debug.LogError("instructionsMenu Object element not set");
+            return;
+        }
+        else
+        {
+            scoresMenu.SetActive(false);
+        }
+
+        //playersSpawnMenu = this.transform.GetChild(6).gameObject;
+
+        //if (!playersSpawnMenu)
+        //{
+        //    Debug.LogError("playersSpawnMenu Object element not set");
+        //    return;
+        //}
+        //else
+        //{
+        //    playersSpawnMenu.SetActive(false);
+        //}
+
         if (!gameStartScreen.transform.GetChild(1).TryGetComponent<UnityEngine.UI.Button>(out startGameButton))
         {
             Debug.LogError("Rety Button element not set");
@@ -94,8 +146,20 @@ public class StartGameUIManager : MonoBehaviour
             Debug.LogError("Controls Button element not set");
             return;
         }
+        
+        if (!optionsScreen.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out instructionsButton))
+        {
+            Debug.LogError("Instructions Button element not set");
+            return;
+        }
+        
+        if (!optionsScreen.transform.GetChild(3).TryGetComponent<UnityEngine.UI.Button>(out scoresButton))
+        {
+            Debug.LogError("Scores Button element not set");
+            return;
+        }
 
-        if (!optionsScreen.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out optionsBackButton))
+        if (!optionsScreen.transform.GetChild(4).TryGetComponent<UnityEngine.UI.Button>(out optionsBackButton))
         {
             Debug.LogError("Options Back Button element not set");
             return;
@@ -130,6 +194,48 @@ public class StartGameUIManager : MonoBehaviour
             Debug.LogError("Start Menu Back Button element not set");
             return;
         }
+        
+        if (!instructionsMenu.transform.GetChild(7).TryGetComponent<UnityEngine.UI.Button>(out instructionsMenuBackButton))
+        {
+            Debug.LogError("Instructions Menu Back Button element not set");
+            return;
+        }
+        
+        if (!scoresMenu.transform.GetChild(7).TryGetComponent<TMPro.TextMeshProUGUI>(out highScoreText))
+        {
+            Debug.LogError("High Score Text element not set");
+            return;
+        }
+        
+        if (!scoresMenu.transform.GetChild(8).TryGetComponent<UnityEngine.UI.Button>(out scoresMenuBackButton))
+        {
+            Debug.LogError("Scores Menu Back Button element not set");
+            return;
+        }
+        
+        //if (!playersSpawnMenu.transform.GetChild(1).TryGetComponent<UnityEngine.UI.Button>(out drugStoreButton))
+        //{
+        //    Debug.LogError("Drug store Spawn Button element not set");
+        //    return;
+        //}
+        
+        //if (!playersSpawnMenu.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out stadiumButton))
+        //{
+        //    Debug.LogError("Stadium Spawn Button element not set");
+        //    return;
+        //}
+        
+        //if (!playersSpawnMenu.transform.GetChild(3).TryGetComponent<UnityEngine.UI.Button>(out factoryButton))
+        //{
+        //    Debug.LogError("Factory Spawn Button element not set");
+        //    return;
+        //}
+        
+        //if (!playersSpawnMenu.transform.GetChild(4).TryGetComponent<UnityEngine.UI.Button>(out playersSpawnMenuBackButton))
+        //{
+        //    Debug.LogError("Players Spawn Menu Back Button element not set");
+        //    return;
+        //}
 
         startGameButton.onClick.RemoveAllListeners();
         startGameButton.onClick.AddListener(() => { startGameMenu.SetActive(true); gameStartScreen.SetActive(false); });
@@ -143,6 +249,12 @@ public class StartGameUIManager : MonoBehaviour
         controlsButton.onClick.RemoveAllListeners();
         controlsButton.onClick.AddListener(() => { controlsScreen.SetActive(true); optionsScreen.SetActive(false); });
 
+        instructionsButton.onClick.RemoveAllListeners();
+        instructionsButton.onClick.AddListener(() => { instructionsMenu.SetActive(true); optionsScreen.SetActive(false); });
+
+        scoresButton.onClick.RemoveAllListeners();
+        scoresButton.onClick.AddListener(() => { scoresMenu.SetActive(true); optionsScreen.SetActive(false); });
+
         optionsBackButton.onClick.RemoveAllListeners();
         optionsBackButton.onClick.AddListener(() => { optionsScreen.SetActive(false); gameStartScreen.SetActive(true); });
 
@@ -150,16 +262,45 @@ public class StartGameUIManager : MonoBehaviour
         controlsBackButton.onClick.AddListener(() => { controlsScreen.SetActive(false); optionsScreen.SetActive(true); });
 
         easyDifficultyButton.onClick.RemoveAllListeners();
-        easyDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(360.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+        easyDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(360.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; startGameMenu.SetActive(false); });
 
         mediumDifficultyButton.onClick.RemoveAllListeners();
-        mediumDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(240.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+        mediumDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(240.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; startGameMenu.SetActive(false); });
 
         hardDifficultyButton.onClick.RemoveAllListeners();
-        hardDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(120.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+        hardDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(120.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; startGameMenu.SetActive(false); });        
+        
+        //easyDifficultyButton.onClick.RemoveAllListeners();
+        //easyDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(360.0f); playersSpawnMenu.SetActive(true); startGameMenu.SetActive(false); });
+
+        //mediumDifficultyButton.onClick.RemoveAllListeners();
+        //mediumDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(240.0f); playersSpawnMenu.SetActive(true); startGameMenu.SetActive(false); });
+
+        //hardDifficultyButton.onClick.RemoveAllListeners();
+        //hardDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(120.0f); playersSpawnMenu.SetActive(true); startGameMenu.SetActive(false); });
 
         startMenuBackButton.onClick.RemoveAllListeners();
         startMenuBackButton.onClick.AddListener(() => { startGameMenu.SetActive(false); gameStartScreen.SetActive(true); });
+
+        instructionsMenuBackButton.onClick.RemoveAllListeners();
+        instructionsMenuBackButton.onClick.AddListener(() => { instructionsMenu.SetActive(false); optionsScreen.SetActive(true); });
+
+        highScoreText.text = "Highest Score Achieved: " + ScoreManager.instance.GetHighScore().ToString();
+
+        scoresMenuBackButton.onClick.RemoveAllListeners();
+        scoresMenuBackButton.onClick.AddListener(() => { scoresMenu.SetActive(false); optionsScreen.SetActive(true); });
+
+        //drugStoreButton.onClick.RemoveAllListeners();
+        //drugStoreButton.onClick.AddListener(() => { GameManager.instance.SetPlayerPosition(63f, 1.35f, 45.0f); GameManager.instance.SetPlayerRotation(0.0f, 0.0f, 0.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        //stadiumButton.onClick.RemoveAllListeners();
+        //stadiumButton.onClick.AddListener(() => { GameManager.instance.SetPlayerPosition(120.5f, 1.35f, 117.2f); GameManager.instance.SetPlayerRotation(0.0f, 90.0f, 0.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        //factoryButton.onClick.RemoveAllListeners();
+        //factoryButton.onClick.AddListener(() => { GameManager.instance.SetPlayerPosition(195.0f, 1.35f, 63f); GameManager.instance.SetPlayerRotation(0.0f, 90.0f, 0.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        //playersSpawnMenuBackButton.onClick.RemoveAllListeners();
+        //playersSpawnMenuBackButton.onClick.AddListener(() => { playersSpawnMenu.SetActive(false); startGameMenu.SetActive(true); });
     }
 
     private void OnDestroy()
@@ -169,6 +310,8 @@ public class StartGameUIManager : MonoBehaviour
         quitGamebutton.onClick.RemoveAllListeners();
 
         controlsButton.onClick.RemoveAllListeners();
+        instructionsButton.onClick.RemoveAllListeners();
+        scoresButton.onClick.RemoveAllListeners();
         optionsBackButton.onClick.RemoveAllListeners();
 
         controlsBackButton.onClick.RemoveAllListeners();
@@ -177,5 +320,14 @@ public class StartGameUIManager : MonoBehaviour
         mediumDifficultyButton.onClick.RemoveAllListeners();
         hardDifficultyButton.onClick.RemoveAllListeners();
         startMenuBackButton.onClick.RemoveAllListeners();
+
+        instructionsMenuBackButton.onClick.RemoveAllListeners();
+
+        scoresMenuBackButton.onClick.RemoveAllListeners();
+
+        //drugStoreButton.onClick.RemoveAllListeners();
+        //stadiumButton.onClick.RemoveAllListeners();
+        //factoryButton.onClick.RemoveAllListeners();
+        //playersSpawnMenuBackButton.onClick.RemoveAllListeners();
     }
 }

@@ -37,7 +37,6 @@ public class RescueEventHandler : MonoBehaviour
 
             if(rescueClassRef.GetChildObjectId() != rescueVechicle.GetTargetChildID())
             {
-                Debug.Log("Not reached target yet.");
                 return;
             }
 

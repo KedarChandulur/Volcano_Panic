@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,11 +10,10 @@ public class GameManager : MonoBehaviour
 
     UIManager uiManager;
 
+    public static event EventHandler GameEndEvent;
+
     private float gameTimeInSeconds = 120f;
     private float currentTime;
-
-    //private uint totalHostageCount = 0;
-    //private uint hostagesSaved = 0;
 
     private bool isGameOver = false;
 
@@ -64,24 +64,12 @@ public class GameManager : MonoBehaviour
             }
 
             currentTime = gameTimeInSeconds;
-            //hostagesSaved = 0;
 
             uiManager.InitTotalTime(gameTimeInSeconds);
-            //uiManager.InitTotalHostagesCount(totalHostageCount);
 
             isGameOver = false;
         }
     }
-
-    //public void UponReachingDestination()
-    //{
-    //    uiManager.UpdateScore(hostagesSaved);
-    //}
-
-    //public void IncreaseHostageSaveCount(uint hostageCount)
-    //{
-    //    hostagesSaved += hostageCount;
-    //}
 
     private void Update()
     {
@@ -96,18 +84,19 @@ public class GameManager : MonoBehaviour
             }
 
             uiManager.Update_Tick(currentTime);
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                uiManager.FlipPauseFunctionality();
+            }
         }
     }
 
-    //public void UpdateTotalHostageCount_Init(uint hostageCount)
-    //{
-    //    totalHostageCount += hostageCount;
-    //}
-
     private void EndGame()
     {
-        isGameOver = true;
         Time.timeScale = 0.0f;
+        isGameOver = true;
+        GameEndEvent?.Invoke(this, EventArgs.Empty);
         SceneManager.LoadScene("EndGameScreen");
     }
 
@@ -115,4 +104,28 @@ public class GameManager : MonoBehaviour
     {
         this.gameTimeInSeconds = _totalTime;
     }
+
+    //public Vector3 GetPlayerPosition()
+    //{
+    //    return this.playerPosition;
+    //}
+
+    //public void SetPlayerPosition(float x, float y, float z)
+    //{
+    //    this.playerPosition.x = x;
+    //    this.playerPosition.y = y;
+    //    this.playerPosition.z = z;
+    //}
+
+    //public Vector3 GetPlayerRotation()
+    //{
+    //    return this.playerRotation;
+    //}
+
+    //public void SetPlayerRotation(float x, float y, float z)
+    //{
+    //    this.playerRotation.x = x;
+    //    this.playerRotation.y = y;
+    //    this.playerRotation.z = z;
+    //}
 }

@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
 
     UIManager uiManager;
 
+    private uint highScoreAchieved = 0;
     private uint possibleScore = 0;
     private uint currentScore = 0;
 
@@ -42,11 +43,13 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+        GameManager.GameEndEvent += GameManager_GameEndEvent;
     }
 
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+        GameManager.GameEndEvent -= GameManager_GameEndEvent;
     }
 
     private void SceneManager_activeSceneChanged(Scene changedFrom, Scene changedTo)
@@ -66,6 +69,12 @@ public class ScoreManager : MonoBehaviour
             uiManager.InitTotalHostagesCount(totalHostageCount);
             UpdateCurrentScore();
         }
+    }
+
+    private void GameManager_GameEndEvent(object sender, System.EventArgs e)
+    {
+        if(currentScore > highScoreAchieved)
+            highScoreAchieved = currentScore;
     }
 
     public void UpdateTotalHostageCount_Init(uint hostageCount)
@@ -94,8 +103,8 @@ public class ScoreManager : MonoBehaviour
         uiManager.UpdateScore(currentScore);
     }
 
-    public void Update_Tick()
+    public uint GetHighScore()
     {
-
+        return highScoreAchieved;
     }
 }

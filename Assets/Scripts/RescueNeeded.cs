@@ -35,29 +35,31 @@ public class RescueNeeded : BaseRescueClass
     {
         if (base.Initialize())
         {
-            switch(hostagePriority)
-            {
-                case HostageDensity.VeryLow:
-                    arrow.color = Color.cyan;
-                    break;
-                case HostageDensity.Low:
-                    arrow.color = Color.blue;
-                    break;
-                case HostageDensity.Normal:
-                    arrow.color = Color.white;
-                    break;
-                case HostageDensity.Medium:
-                    arrow.color = Color.yellow;
-                    break;
-                case HostageDensity.High:
-                    arrow.color = Color.red;
-                    break;
-                case HostageDensity.Undefined:
-                default:
-                    arrow.color = Color.grey;
-                    Debug.LogError("Error setting the arrow color.");
-                    break;
-            }
+            arrow.color = GetColorBasedOnPriority();
+
+            //switch (hostagePriority)
+            //{
+            //    case HostageDensity.VeryLow:
+            //        arrow.color = Color.cyan;
+            //        break;
+            //    case HostageDensity.Low:
+            //        arrow.color = Color.blue;
+            //        break;
+            //    case HostageDensity.Normal:
+            //        arrow.color = Color.white;
+            //        break;
+            //    case HostageDensity.Medium:
+            //        arrow.color = Color.yellow;
+            //        break;
+            //    case HostageDensity.High:
+            //        arrow.color = Color.red;
+            //        break;
+            //    case HostageDensity.Undefined:
+            //    default:
+            //        arrow.color = Color.grey;
+            //        Debug.LogError("Error setting the arrow color.");
+            //        break;
+            //}
         }
         else
         {
@@ -119,5 +121,35 @@ public class RescueNeeded : BaseRescueClass
         }
 
         return returnHostagesCount;
+    }
+
+    public Color GetColorBasedOnPriority()
+    {
+        Color color;
+
+        switch (hostagePriority)
+        {
+            case HostageDensity.VeryLow:
+                color = Color.cyan;
+                break;
+            case HostageDensity.Low:
+                color = Color.blue;
+                break;
+            case HostageDensity.Normal:
+                color = Color.white;
+                break;
+            case HostageDensity.Medium:
+                color = Color.yellow;
+                break;
+            case HostageDensity.High:
+                color = Color.red;
+                break;
+            case HostageDensity.Undefined:
+            default:
+                color = Color.grey;
+                break;
+        }
+
+        return color;
     }
 }
