@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf77c3909dfc33c4c8d7c8d55a3dfa4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hostageDensity: 20
-  localHostageCount: 0
+  hostagePriority: 1
+  localHostageCount: 4
 --- !u!65 &1575532483912297479
 BoxCollider:
   m_ObjectHideFlags: 0

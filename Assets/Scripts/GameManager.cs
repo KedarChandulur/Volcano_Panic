@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,14 +7,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    UIManager uI_Manager;
+    UIManager uiManager;
 
     private float gameTimeInSeconds = 120f;
     private float currentTime;
 
-    [SerializeField]
-    private uint totalHostageCount = 0;
-    private uint hostagesSaved = 0;
+    //private uint totalHostageCount = 0;
+    //private uint hostagesSaved = 0;
 
     private bool isGameOver = false;
 
@@ -55,63 +53,56 @@ public class GameManager : MonoBehaviour
 
     private void SceneManager_activeSceneChanged(Scene changedFrom, Scene changedTo)
     {
-        Debug.Log(changedTo.name + " Scene Loaded.");
-
         currentActiveScene = changedTo;
 
         if (currentActiveScene.buildIndex == 1) // Doing index comparisions as its faster than strings
         {
-            if (!GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uI_Manager))
+            if (!GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uiManager))
             {
                 Debug.LogError("UI Manager not set");
                 return;
             }
 
             currentTime = gameTimeInSeconds;
-            hostagesSaved = 0;
+            //hostagesSaved = 0;
 
-            uI_Manager.InitTotalTime(gameTimeInSeconds);
-            uI_Manager.InitTotalHostagesCount(totalHostageCount);
+            uiManager.InitTotalTime(gameTimeInSeconds);
+            //uiManager.InitTotalHostagesCount(totalHostageCount);
 
             isGameOver = false;
         }
     }
 
-    public void UponReachingDestination()
-    {
-        uI_Manager.UpdateScore(hostagesSaved);
-    }
+    //public void UponReachingDestination()
+    //{
+    //    uiManager.UpdateScore(hostagesSaved);
+    //}
 
-    public void IncreaseHostageSaveCount(uint hostageCount)
-    {
-        hostagesSaved += hostageCount;
-    }
+    //public void IncreaseHostageSaveCount(uint hostageCount)
+    //{
+    //    hostagesSaved += hostageCount;
+    //}
 
     private void Update()
     {
         if (currentActiveScene.buildIndex == 1 && !isGameOver) // Doing index comparisions as its faster than strings
         {
-            UpdateTimer();
+            currentTime -= Time.deltaTime;
+
+            if (currentTime <= 0f)
+            {
+                currentTime = 0f;
+                EndGame();
+            }
+
+            uiManager.Update_Tick(currentTime);
         }
     }
 
-    public void UpdateTotalHostageCount_Init(uint hostageCount)
-    {
-        totalHostageCount += hostageCount;
-    }
-
-    private void UpdateTimer()
-    {
-        currentTime -= Time.deltaTime;
-
-        if (currentTime <= 0f)
-        {
-            currentTime = 0f;
-            EndGame();
-        }
-
-        uI_Manager.UpdateTimerDisplay(currentTime);
-    }
+    //public void UpdateTotalHostageCount_Init(uint hostageCount)
+    //{
+    //    totalHostageCount += hostageCount;
+    //}
 
     private void EndGame()
     {

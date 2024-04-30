@@ -5,31 +5,27 @@ public class RescueNeeded : BaseRescueClass
     public enum HostageDensity : uint
     {
         Undefined = 0,
-        VeryLow = 10,
-        Low = 20,
-        Normal = 30,
-        Medium = 75,
-        High = 95
+        VeryLow = 1,
+        Low = 2,
+        Normal = 3,
+        Medium = 4,
+        High = 5
     }
 
-    public HostageDensity hostageDensity;
+    public HostageDensity hostagePriority;
 
     [SerializeField]
-    private uint localHostageCount = (uint)HostageDensity.Undefined;
+    private uint localHostageCount = 0;
 
     private void Awake()
     {
-        if (hostageDensity == HostageDensity.Undefined)
+        if (hostagePriority == HostageDensity.Undefined || localHostageCount == 0)
         {
             Debug.LogError("Did you setup hostage data correctly?");
+            return;
         }
 
-        if (localHostageCount == 0)
-        {
-            localHostageCount = (uint)hostageDensity;
-        }
-
-        if(GameObject.FindGameObjectWithTag("GameController").TryGetComponent<GameManager>(out GameManager gameManager))
+        if(GameObject.FindGameObjectWithTag("ScoreController").TryGetComponent<ScoreManager>(out ScoreManager gameManager))
         {
             gameManager.UpdateTotalHostageCount_Init(localHostageCount);
         }
@@ -39,7 +35,7 @@ public class RescueNeeded : BaseRescueClass
     {
         if (base.Initialize())
         {
-            switch(hostageDensity)
+            switch(hostagePriority)
             {
                 case HostageDensity.VeryLow:
                     arrow.color = Color.cyan;
@@ -92,5 +88,36 @@ public class RescueNeeded : BaseRescueClass
     public void DecrementHostageCount(uint hostageCountToReduce)
     {
         this.localHostageCount -= hostageCountToReduce;
+    }
+
+    public uint GetScoreUpdateBasedOnPriority(uint hostagesCount)
+    {
+        uint returnHostagesCount;
+
+        switch (hostagePriority)
+        {
+            case HostageDensity.VeryLow:
+                returnHostagesCount = hostagesCount * 2;
+                break;
+            case HostageDensity.Low:
+                returnHostagesCount = hostagesCount * 3;
+                break;
+            case HostageDensity.Normal:
+                returnHostagesCount = hostagesCount * 4;
+                break;
+            case HostageDensity.Medium:
+                returnHostagesCount = hostagesCount * 5;
+                break;
+            case HostageDensity.High:
+                returnHostagesCount = hostagesCount * 6;
+                break;
+            case HostageDensity.Undefined:
+            default:
+                returnHostagesCount = hostagesCount;
+                Debug.LogError("Error setting the arrow color.");
+                break;
+        }
+
+        return returnHostagesCount;
     }
 }

@@ -45,7 +45,8 @@ public class RescueEventHandler : MonoBehaviour
             {
                 rescueVechicle.SetAgentState(RescueVechicles.AgentState.Rescued);
 
-                GameManager.instance.UponReachingDestination();
+                ScoreManager.instance.UpdateCurrentScore();
+                ScoreManager.instance.UponHostagesSaved_UI();
             }
 
             if (rescueClassRef.GetType() == typeof(RescueNeeded) && (rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage || rescueVechicle.GetAgentState() == RescueVechicles.AgentState.PickedUpHostages))

@@ -23,8 +23,9 @@ public class UIManager : MonoBehaviour
 
     TextMeshProUGUI hostageSaveText;
     TextMeshProUGUI timerText;
-    TextMeshProUGUI scoreText;
+    TextMeshProUGUI hostagesSavedText;
     TextMeshProUGUI errorText;
+    TextMeshProUGUI scoreText;
 
     RescueNeeded rescueNeeded_Ref;
     RescueVechicles rescueVechile_Ref;
@@ -42,7 +43,13 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if(!this.transform.GetChild(2).TryGetComponent<TextMeshProUGUI>(out scoreText))
+        if(!this.transform.GetChild(2).TryGetComponent<TextMeshProUGUI>(out hostagesSavedText))
+        {
+            Debug.LogError("Hostages Saved Text Ref not set");
+            return;
+        }
+        
+        if(!this.transform.GetChild(3).TryGetComponent<TextMeshProUGUI>(out scoreText))
         {
             Debug.LogError("Score Text Ref not set");
             return;
@@ -98,17 +105,17 @@ public class UIManager : MonoBehaviour
     {
         totalTime = _totalTime;
 
-        UpdateTimerDisplay(totalTime);
+        Update_Tick(totalTime);
     }
 
     public void InitTotalHostagesCount(uint _totalHostagesCount)
     {
         totalHostages = _totalHostagesCount;
 
-        UpdateScore(0);
+        UpdateHostagesSaved(0);
     }
 
-    public void UpdateTimerDisplay(float currentTime)
+    public void Update_Tick(float currentTime)
     {
         int minutes = Mathf.FloorToInt(currentTime / 60f);
         int seconds = Mathf.FloorToInt(currentTime % 60f);
@@ -122,11 +129,18 @@ public class UIManager : MonoBehaviour
         }
 
         timerText.text = "Time Left: " + string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        //ScoreManager.UpdateTick();
     }
 
-    public void UpdateScore(uint hostagesSaved)
+    public void UpdateHostagesSaved(uint hostagesSaved)
     {
-        scoreText.text = "Hostages Saved: " + hostagesSaved + "\nHostages Left: " + (totalHostages - hostagesSaved);
+        hostagesSavedText.text = "Hostages Saved: " + hostagesSaved + "\nHostages Left: " + (totalHostages - hostagesSaved);
+    }
+
+    public void UpdateScore(uint currentScore)
+    {
+        scoreText.text = "Score: " + currentScore;
     }
 
     private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.Custom_RescueEventHandler_EventArgs customEventArgs)
@@ -189,7 +203,9 @@ public class UIManager : MonoBehaviour
         rescueButton.interactable = false;
         hostageSaveText.transform.parent.gameObject.SetActive(false);
 
-        GameManager.instance.IncreaseHostageSaveCount((uint)hostageCount);
+        ScoreManager.instance.IncrementPossibleScore(rescueNeeded_Ref.GetScoreUpdateBasedOnPriority((uint)hostageCount));
+
+        ScoreManager.instance.IncreaseHostageSaveCount((uint)hostageCount);
         rescueVechile_Ref.DecrementCurrentVechicleCapacity((uint)hostageCount);
 
         OnRescueButtonClickedEvent?.Invoke(this, new Custom_UIManager_EventArgs((uint)hostageCount, rescueNeeded_Ref.GetChildObjectId()));
