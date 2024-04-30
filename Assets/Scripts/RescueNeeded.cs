@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static RescueNeeded;
 
 public class RescueNeeded : BaseRescueClass
 {
@@ -78,9 +76,12 @@ public class RescueNeeded : BaseRescueClass
         UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
     }
 
-    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
+    private void UIManager_OnRescueButtonClickedEvent(object sender, UIManager.Custom_UIManager_EventArgs e)
     {
-        this.DecrementHostageCount(e);
+        if(e.childTargetID == this.GetChildObjectId())
+        { 
+            this.DecrementHostageCount(e.hostageCount);
+        }
     }
 
     public uint GetHostageCount()

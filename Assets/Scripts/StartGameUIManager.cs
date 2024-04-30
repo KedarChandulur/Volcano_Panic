@@ -11,9 +11,15 @@ public class StartGameUIManager : MonoBehaviour
 
     UnityEngine.UI.Button controlsBackButton;
 
+    UnityEngine.UI.Button easyDifficultyButton;
+    UnityEngine.UI.Button mediumDifficultyButton;
+    UnityEngine.UI.Button hardDifficultyButton;
+    UnityEngine.UI.Button startMenuBackButton;
+
     GameObject gameStartScreen;
     GameObject optionsScreen;
     GameObject controlsScreen;
+    GameObject startGameMenu;
 
     void Start()
     {
@@ -53,6 +59,18 @@ public class StartGameUIManager : MonoBehaviour
             controlsScreen.SetActive(false);
         }
 
+        startGameMenu = this.transform.GetChild(3).gameObject;
+
+        if (!startGameMenu)
+        {
+            Debug.LogError("optionsScreen Object element not set");
+            return;
+        }
+        else
+        {
+            startGameMenu.SetActive(false);
+        }
+
         if (!gameStartScreen.transform.GetChild(1).TryGetComponent<UnityEngine.UI.Button>(out startGameButton))
         {
             Debug.LogError("Rety Button element not set");
@@ -79,18 +97,42 @@ public class StartGameUIManager : MonoBehaviour
 
         if (!optionsScreen.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out optionsBackButton))
         {
-            Debug.LogError("Back Button element not set");
+            Debug.LogError("Options Back Button element not set");
             return;
         }
 
         if (!controlsScreen.transform.GetChild(5).TryGetComponent<UnityEngine.UI.Button>(out controlsBackButton))
         {
-            Debug.LogError("Back Button element not set");
+            Debug.LogError("Controls Back Button element not set");
+            return;
+        }
+
+        if (!startGameMenu.transform.GetChild(1).TryGetComponent<UnityEngine.UI.Button>(out easyDifficultyButton))
+        {
+            Debug.LogError("Easy game Button element not set");
+            return;
+        }
+
+        if (!startGameMenu.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out mediumDifficultyButton))
+        {
+            Debug.LogError("Medium game Button element not set");
+            return;
+        }
+
+        if (!startGameMenu.transform.GetChild(3).TryGetComponent<UnityEngine.UI.Button>(out hardDifficultyButton))
+        {
+            Debug.LogError("Hard game Button element not set");
+            return;
+        }
+
+        if (!startGameMenu.transform.GetChild(4).TryGetComponent<UnityEngine.UI.Button>(out startMenuBackButton))
+        {
+            Debug.LogError("Start Menu Back Button element not set");
             return;
         }
 
         startGameButton.onClick.RemoveAllListeners();
-        startGameButton.onClick.AddListener(() => { UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+        startGameButton.onClick.AddListener(() => { startGameMenu.SetActive(true); gameStartScreen.SetActive(false); });
 
         optionsButton.onClick.RemoveAllListeners();
         optionsButton.onClick.AddListener(() => { optionsScreen.SetActive(true); gameStartScreen.SetActive(false); });
@@ -107,6 +149,17 @@ public class StartGameUIManager : MonoBehaviour
         controlsBackButton.onClick.RemoveAllListeners();
         controlsBackButton.onClick.AddListener(() => { controlsScreen.SetActive(false); optionsScreen.SetActive(true); });
 
+        easyDifficultyButton.onClick.RemoveAllListeners();
+        easyDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(360.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        mediumDifficultyButton.onClick.RemoveAllListeners();
+        mediumDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(240.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        hardDifficultyButton.onClick.RemoveAllListeners();
+        hardDifficultyButton.onClick.AddListener(() => { GameManager.instance.SetGameTime(120.0f); UnityEngine.SceneManagement.SceneManager.LoadScene("City"); Time.timeScale = 1.0f; });
+
+        startMenuBackButton.onClick.RemoveAllListeners();
+        startMenuBackButton.onClick.AddListener(() => { startGameMenu.SetActive(false); gameStartScreen.SetActive(true); });
     }
 
     private void OnDestroy()
@@ -119,5 +172,10 @@ public class StartGameUIManager : MonoBehaviour
         optionsBackButton.onClick.RemoveAllListeners();
 
         controlsBackButton.onClick.RemoveAllListeners();
+
+        easyDifficultyButton.onClick.RemoveAllListeners();
+        mediumDifficultyButton.onClick.RemoveAllListeners();
+        hardDifficultyButton.onClick.RemoveAllListeners();
+        startMenuBackButton.onClick.RemoveAllListeners();
     }
 }

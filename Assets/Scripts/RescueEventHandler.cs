@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class RescueEventHandler : MonoBehaviour
 {
-    public class CustomEventArgs : EventArgs
+    public class Custom_RescueEventHandler_EventArgs : EventArgs
     {
         public RescueVechicles rescueVechicle { get; }
         public RescueNeeded rescueNeeded { get; }
 
-        public CustomEventArgs(RescueVechicles _rescueVechicle, RescueNeeded _rescueNeeded)
+        public Custom_RescueEventHandler_EventArgs(RescueVechicles _rescueVechicle, RescueNeeded _rescueNeeded)
         {
             rescueVechicle = _rescueVechicle;
             rescueNeeded = _rescueNeeded;
@@ -16,7 +16,7 @@ public class RescueEventHandler : MonoBehaviour
     }
 
     private BaseRescueClass rescueClassRef;
-    public static event EventHandler<CustomEventArgs> OnReachingHostage;
+    public static event EventHandler<Custom_RescueEventHandler_EventArgs> OnReachingHostage;
 
     void Start()
     {
@@ -48,11 +48,11 @@ public class RescueEventHandler : MonoBehaviour
                 GameManager.instance.UponReachingDestination();
             }
 
-            if (rescueClassRef.GetType() == typeof(RescueNeeded) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage)
+            if (rescueClassRef.GetType() == typeof(RescueNeeded) && (rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage || rescueVechicle.GetAgentState() == RescueVechicles.AgentState.PickedUpHostages))
             {
                 rescueVechicle.SetAgentState(RescueVechicles.AgentState.ReachedHostage);
 
-                OnReachingHostage?.Invoke(this, new CustomEventArgs(rescueVechicle, (RescueNeeded)rescueClassRef));
+                OnReachingHostage?.Invoke(this, new Custom_RescueEventHandler_EventArgs(rescueVechicle, (RescueNeeded)rescueClassRef));
 
                 rescueVechicle.StopAgent();
             }

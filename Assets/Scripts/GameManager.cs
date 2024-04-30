@@ -10,13 +10,12 @@ public class GameManager : MonoBehaviour
 
     UIManager uI_Manager;
 
-    [SerializeField]
     private float gameTimeInSeconds = 120f;
     private float currentTime;
 
     [SerializeField]
     private uint totalHostageCount = 0;
-    private uint hostagesLeft = 0;
+    private uint hostagesSaved = 0;
 
     private bool isGameOver = false;
 
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
             }
 
             currentTime = gameTimeInSeconds;
-            hostagesLeft = totalHostageCount;
+            hostagesSaved = 0;
 
             uI_Manager.InitTotalTime(gameTimeInSeconds);
             uI_Manager.InitTotalHostagesCount(totalHostageCount);
@@ -80,12 +79,12 @@ public class GameManager : MonoBehaviour
 
     public void UponReachingDestination()
     {
-        uI_Manager.UpdateScore(hostagesLeft);
+        uI_Manager.UpdateScore(hostagesSaved);
     }
 
-    public void DecrementHostageCount(uint hostageCount)
+    public void IncreaseHostageSaveCount(uint hostageCount)
     {
-        hostagesLeft -= hostageCount;
+        hostagesSaved += hostageCount;
     }
 
     private void Update()
@@ -119,5 +118,10 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Time.timeScale = 0.0f;
         SceneManager.LoadScene("EndGameScreen");
+    }
+
+    public void SetGameTime(float _totalTime)
+    {
+        this.gameTimeInSeconds = _totalTime;
     }
 }

@@ -16,6 +16,7 @@ public class RescueVechicles : MonoBehaviour
 
     [SerializeField]
     private uint vechicleCapacity = 20;
+    private uint currentVechicleCapacity = 0;
 
     NavMeshAgent agent;
     AgentState agentState = AgentState.Undefined;
@@ -32,7 +33,7 @@ public class RescueVechicles : MonoBehaviour
             }
 
             this.agent.autoRepath = true;
-            this.agent.speed = 7.0f;
+            this.ResetVechile();
 
             agentState = AgentState.Initialized;
         }
@@ -47,7 +48,7 @@ public class RescueVechicles : MonoBehaviour
         UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
     }
 
-    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
+    private void UIManager_OnRescueButtonClickedEvent(object sender, UIManager.Custom_UIManager_EventArgs e)
     {
         this.SetAgentState(AgentState.PickedUpHostages);
     }
@@ -58,7 +59,7 @@ public class RescueVechicles : MonoBehaviour
 
         if (agentState == AgentState.PickedUpHostages)
         {
-            if (baseRescue.GetType() != typeof(RescueDestination))
+            if (baseRescue.GetType() != typeof(RescueDestination) && this.currentVechicleCapacity < 1)
             {
                 Debug.Log("You already have enough hostages.");
                 return;
@@ -66,7 +67,10 @@ public class RescueVechicles : MonoBehaviour
 
             targetChildID = _targetChildID;
 
-            agentState = AgentState.InTransit_TowardsDestination;
+            if(baseRescue.GetType() == typeof(RescueDestination))
+            { 
+                agentState = AgentState.InTransit_TowardsDestination;
+            }
 
             agent.SetDestination(baseRescue.GetDestination());
         }
@@ -107,7 +111,7 @@ public class RescueVechicles : MonoBehaviour
         }
         else if (this.agentState == AgentState.Rescued)
         {
-            this.agent.speed = 7.0f;
+            this.ResetVechile();
         }
     }
 
@@ -120,8 +124,19 @@ public class RescueVechicles : MonoBehaviour
         }
     }
 
-    public uint GetVechicleCapacity()
+    public uint GetCurrentVechileCapacity()
     {
-        return vechicleCapacity;
+        return currentVechicleCapacity;
+    }
+
+    public void DecrementCurrentVechicleCapacity(uint value)
+    {
+        currentVechicleCapacity -= value;
+    }
+
+    public void ResetVechile()
+    {
+        this.agent.speed = 7.0f;
+        currentVechicleCapacity = vechicleCapacity;
     }
 }

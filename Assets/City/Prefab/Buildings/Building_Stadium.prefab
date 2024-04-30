@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hostageDensity: 50
-  hostageCount: 0
+  localHostageCount: 100
 --- !u!65 &7006010143113546975
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -6,6 +6,18 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public class Custom_UIManager_EventArgs : EventArgs
+    {
+        public uint hostageCount { get; }
+        public int childTargetID { get; }
+
+        public Custom_UIManager_EventArgs(uint _hostageCount, int _childTargetID)
+        {
+            hostageCount = _hostageCount;
+            childTargetID = _childTargetID;
+        }
+    }
+
     TMP_InputField inputField;
     UnityEngine.UI.Button rescueButton;
 
@@ -17,7 +29,7 @@ public class UIManager : MonoBehaviour
     RescueNeeded rescueNeeded_Ref;
     RescueVechicles rescueVechile_Ref;
 
-    public static event EventHandler<uint> OnRescueButtonClickedEvent;
+    public static event EventHandler<Custom_UIManager_EventArgs> OnRescueButtonClickedEvent;
 
     float totalTime = 0.0f;
     uint totalHostages = 0;
@@ -114,10 +126,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(uint hostagesSaved)
     {
-        scoreText.text = "Hostages Saved: " + (totalHostages - hostagesSaved) + "\nHostages Left: " + hostagesSaved;
+        scoreText.text = "Hostages Saved: " + hostagesSaved + "\nHostages Left: " + (totalHostages - hostagesSaved);
     }
 
-    private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.CustomEventArgs customEventArgs)
+    private void RescueEventHandler_OnReachingHostage(object sender, RescueEventHandler.Custom_RescueEventHandler_EventArgs customEventArgs)
     {
         rescueNeeded_Ref = null;
         rescueVechile_Ref = null;
@@ -134,7 +146,7 @@ public class UIManager : MonoBehaviour
         rescueButton.interactable = true;
         hostageSaveText.transform.parent.gameObject.SetActive(true);
 
-        hostageSaveText.text = "How many hostages you want to save?\nHostages found at site: " + rescueNeeded_Ref.GetHostageCount() + "\nVechicle Capacity: " + rescueVechile_Ref.GetVechicleCapacity();
+        hostageSaveText.text = "How many hostages you want to save?\nHostages found at site: " + rescueNeeded_Ref.GetHostageCount() + "\nVechicle Capacity: " + rescueVechile_Ref.GetCurrentVechileCapacity();
     }
 
     public void OnRescueButtonClicked()
@@ -167,7 +179,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if(hostageCount > rescueVechile_Ref.GetVechicleCapacity())
+        if(hostageCount > rescueVechile_Ref.GetCurrentVechileCapacity())
         {
             inputField.text = string.Empty;
             StartCoroutine(ShowErrorText("Can't select more hostages than vechicle capacity."));
@@ -177,8 +189,10 @@ public class UIManager : MonoBehaviour
         rescueButton.interactable = false;
         hostageSaveText.transform.parent.gameObject.SetActive(false);
 
-        GameManager.instance.DecrementHostageCount((uint)hostageCount);
-        OnRescueButtonClickedEvent?.Invoke(this, (uint)hostageCount);
+        GameManager.instance.IncreaseHostageSaveCount((uint)hostageCount);
+        rescueVechile_Ref.DecrementCurrentVechicleCapacity((uint)hostageCount);
+
+        OnRescueButtonClickedEvent?.Invoke(this, new Custom_UIManager_EventArgs((uint)hostageCount, rescueNeeded_Ref.GetChildObjectId()));
 
         inputField.text = string.Empty;
     }
