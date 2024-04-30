@@ -17,7 +17,6 @@ public class RescueEventHandler : MonoBehaviour
 
     private BaseRescueClass rescueClassRef;
     public static event EventHandler<CustomEventArgs> OnReachingHostage;
-    public static event EventHandler OnReachingDestination;
 
     void Start()
     {
@@ -46,9 +45,7 @@ public class RescueEventHandler : MonoBehaviour
             {
                 rescueVechicle.SetAgentState(RescueVechicles.AgentState.Rescued);
 
-                OnReachingDestination?.Invoke(this, EventArgs.Empty);
-
-                Debug.Log(rescueVechicle.GetAgentState());
+                GameManager.instance.UponReachingDestination();
             }
 
             if (rescueClassRef.GetType() == typeof(RescueNeeded) && rescueVechicle.GetAgentState() == RescueVechicles.AgentState.InTransit_TowardsHostage)
@@ -58,8 +55,6 @@ public class RescueEventHandler : MonoBehaviour
                 OnReachingHostage?.Invoke(this, new CustomEventArgs(rescueVechicle, (RescueNeeded)rescueClassRef));
 
                 rescueVechicle.StopAgent();
-
-                Debug.Log(rescueVechicle.GetAgentState());
             }
         }
     }

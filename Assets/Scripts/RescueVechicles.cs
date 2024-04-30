@@ -68,8 +68,6 @@ public class RescueVechicles : MonoBehaviour
 
             agentState = AgentState.InTransit_TowardsDestination;
 
-            Debug.Log(agentState);
-
             agent.SetDestination(baseRescue.GetDestination());
         }
 
@@ -84,8 +82,6 @@ public class RescueVechicles : MonoBehaviour
             targetChildID = _targetChildID;
 
             agentState = AgentState.InTransit_TowardsHostage;
-
-            Debug.Log(agentState);
 
             agent.SetDestination(baseRescue.GetDestination());
         }

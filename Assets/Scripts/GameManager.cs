@@ -4,56 +4,93 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    UIManager uI_Manager;
+    Scene currentActiveScene;
 
-    public static event EventHandler GameoverEvent;
+    public static GameManager instance;
+
+    UIManager uI_Manager;
 
     [SerializeField]
     private float gameTimeInSeconds = 120f;
     private float currentTime;
+
     [SerializeField]
     private uint totalHostageCount = 0;
     private uint hostagesLeft = 0;
+
     private bool isGameOver = false;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void InstantiateGameManager()
+    {
+        if (instance == null)
+        {
+            GameObject gameManagerObject = new GameObject("GameManager");
+            gameManagerObject.AddComponent<GameManager>();
+            gameManagerObject.tag = "GameController";
+            DontDestroyOnLoad(gameManagerObject);
+        }
+    }
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {
-        currentTime = gameTimeInSeconds;
-
-        if(!GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uI_Manager))
-        {
-            Debug.LogError("UI Manager not set");
-            return;
-        }
-
-        uI_Manager.InitTotalTime(gameTimeInSeconds);
-        uI_Manager.InitTotalHostagesCount(totalHostageCount);
-
-        hostagesLeft = totalHostageCount;
-
-        UIManager.OnRescueButtonClickedEvent += UIManager_OnRescueButtonClickedEvent;
-        RescueEventHandler.OnReachingDestination += RescueEventHandler_OnReachingDestination;
+        SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
     }
 
     private void OnDestroy()
     {
-        UIManager.OnRescueButtonClickedEvent -= UIManager_OnRescueButtonClickedEvent;
-        RescueEventHandler.OnReachingDestination -= RescueEventHandler_OnReachingDestination;
+        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
     }
 
-    private void RescueEventHandler_OnReachingDestination(object sender, System.EventArgs e)
+    private void SceneManager_activeSceneChanged(Scene changedFrom, Scene changedTo)
+    {
+        Debug.Log(changedTo.name + " Scene Loaded.");
+
+        currentActiveScene = changedTo;
+
+        if (currentActiveScene.buildIndex == 1) // Doing index comparisions as its faster than strings
+        {
+            if (!GameObject.FindGameObjectWithTag("UIManager").TryGetComponent<UIManager>(out uI_Manager))
+            {
+                Debug.LogError("UI Manager not set");
+                return;
+            }
+
+            currentTime = gameTimeInSeconds;
+            hostagesLeft = totalHostageCount;
+
+            uI_Manager.InitTotalTime(gameTimeInSeconds);
+            uI_Manager.InitTotalHostagesCount(totalHostageCount);
+
+            isGameOver = false;
+        }
+    }
+
+    public void UponReachingDestination()
     {
         uI_Manager.UpdateScore(hostagesLeft);
     }
 
-    private void UIManager_OnRescueButtonClickedEvent(object sender, uint e)
+    public void DecrementHostageCount(uint hostageCount)
     {
-        this.DecrementHostageCount(e);
+        hostagesLeft -= hostageCount;
     }
 
     private void Update()
     {
-        if (!isGameOver)
+        if (currentActiveScene.buildIndex == 1 && !isGameOver) // Doing index comparisions as its faster than strings
         {
             UpdateTimer();
         }
@@ -62,11 +99,6 @@ public class GameManager : MonoBehaviour
     public void UpdateTotalHostageCount_Init(uint hostageCount)
     {
         totalHostageCount += hostageCount;
-    }
-
-    public void DecrementHostageCount(uint hostageCount)
-    {
-        hostagesLeft -= hostageCount;
     }
 
     private void UpdateTimer()
@@ -85,10 +117,7 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         isGameOver = true;
-        Time.timeScale = 0f;
-
-        GameoverEvent?.Invoke(this, EventArgs.Empty);
-
+        Time.timeScale = 0.0f;
         SceneManager.LoadScene("EndGameScreen");
     }
 }

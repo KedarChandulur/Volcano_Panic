@@ -7,7 +7,6 @@ public class StartGameUIManager : MonoBehaviour
     UnityEngine.UI.Button quitGamebutton;
 
     UnityEngine.UI.Button controlsButton;
-    //UnityEngine.UI.Button settingsButton;
     UnityEngine.UI.Button optionsBackButton;
 
     UnityEngine.UI.Button controlsBackButton;
@@ -78,13 +77,7 @@ public class StartGameUIManager : MonoBehaviour
             return;
         }
 
-        //if (!optionsScreen.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out settingsButton))
-        //{
-        //    Debug.LogError("Settings Button element not set");
-        //    return;
-        //}
-
-        if (!optionsScreen.transform.GetChild(3).TryGetComponent<UnityEngine.UI.Button>(out optionsBackButton))
+        if (!optionsScreen.transform.GetChild(2).TryGetComponent<UnityEngine.UI.Button>(out optionsBackButton))
         {
             Debug.LogError("Back Button element not set");
             return;
@@ -108,9 +101,6 @@ public class StartGameUIManager : MonoBehaviour
         controlsButton.onClick.RemoveAllListeners();
         controlsButton.onClick.AddListener(() => { controlsScreen.SetActive(true); optionsScreen.SetActive(false); });
 
-        //settingsButton.onClick.RemoveAllListeners();
-        //settingsButton.onClick.AddListener(() => { });
-
         optionsBackButton.onClick.RemoveAllListeners();
         optionsBackButton.onClick.AddListener(() => { optionsScreen.SetActive(false); gameStartScreen.SetActive(true); });
 
@@ -126,7 +116,6 @@ public class StartGameUIManager : MonoBehaviour
         quitGamebutton.onClick.RemoveAllListeners();
 
         controlsButton.onClick.RemoveAllListeners();
-        //settingsButton.onClick.RemoveAllListeners();
         optionsBackButton.onClick.RemoveAllListeners();
 
         controlsBackButton.onClick.RemoveAllListeners();

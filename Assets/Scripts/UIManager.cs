@@ -177,6 +177,7 @@ public class UIManager : MonoBehaviour
         rescueButton.interactable = false;
         hostageSaveText.transform.parent.gameObject.SetActive(false);
 
+        GameManager.instance.DecrementHostageCount((uint)hostageCount);
         OnRescueButtonClickedEvent?.Invoke(this, (uint)hostageCount);
 
         inputField.text = string.Empty;
