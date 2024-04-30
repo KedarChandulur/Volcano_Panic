@@ -160,7 +160,7 @@ public class UIManager : MonoBehaviour
         rescueButton.interactable = true;
         hostageSaveText.transform.parent.gameObject.SetActive(true);
 
-        hostageSaveText.text = "How many hostages you want to save?\nHostages found at site: " + rescueNeeded_Ref.GetHostageCount() + "\nVechicle Capacity: " + rescueVechile_Ref.GetCurrentVechileCapacity();
+        hostageSaveText.text = "How many hostages you want to save?\nHostages found: " + rescueNeeded_Ref.GetHostageCount() + "\nVechicle Capacity: " + rescueVechile_Ref.GetCurrentVechileCapacity();
     }
 
     public void OnRescueButtonClicked()
