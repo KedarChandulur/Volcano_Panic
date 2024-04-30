@@ -3,8 +3,20 @@ using UnityEngine;
 
 public class RescueEventHandler : MonoBehaviour
 {
+    public class CustomEventArgs : EventArgs
+    {
+        public RescueVechicles rescueVechicle { get; }
+        public RescueNeeded rescueNeeded { get; }
+
+        public CustomEventArgs(RescueVechicles _rescueVechicle, RescueNeeded _rescueNeeded)
+        {
+            rescueVechicle = _rescueVechicle;
+            rescueNeeded = _rescueNeeded;
+        }
+    }
+
     private BaseRescueClass rescueClassRef;
-    public static event EventHandler<RescueNeeded> OnReachingHostage;
+    public static event EventHandler<CustomEventArgs> OnReachingHostage;
     public static event EventHandler OnReachingDestination;
 
     void Start()
@@ -43,7 +55,7 @@ public class RescueEventHandler : MonoBehaviour
             {
                 rescueVechicle.SetAgentState(RescueVechicles.AgentState.ReachedHostage);
 
-                OnReachingHostage?.Invoke(this, (RescueNeeded)rescueClassRef);
+                OnReachingHostage?.Invoke(this, new CustomEventArgs(rescueVechicle, (RescueNeeded)rescueClassRef));
 
                 rescueVechicle.StopAgent();
 

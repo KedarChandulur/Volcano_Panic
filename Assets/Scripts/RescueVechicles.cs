@@ -14,6 +14,9 @@ public class RescueVechicles : MonoBehaviour
         Rescued = 5
     }
 
+    [SerializeField]
+    private uint vechicleCapacity = 20;
+
     NavMeshAgent agent;
     AgentState agentState = AgentState.Undefined;
     int targetChildID;
@@ -119,5 +122,10 @@ public class RescueVechicles : MonoBehaviour
             agent.isStopped = true;
             agent.ResetPath();
         }
+    }
+
+    public uint GetVechicleCapacity()
+    {
+        return vechicleCapacity;
     }
 }

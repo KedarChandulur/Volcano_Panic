@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     UIManager uI_Manager;
+
+    public static event EventHandler GameoverEvent;
+
     [SerializeField]
     private float gameTimeInSeconds = 120f;
     private float currentTime;
@@ -80,8 +85,10 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         isGameOver = true;
-        Debug.Log("Game Over!");
-
         Time.timeScale = 0f;
+
+        GameoverEvent?.Invoke(this, EventArgs.Empty);
+
+        SceneManager.LoadScene("EndGameScreen");
     }
 }
