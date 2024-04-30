@@ -8,8 +8,8 @@ public class RescueNeeded : BaseRescueClass
         VeryLow = 10,
         Low = 20,
         Normal = 30,
-        Medium = 40,
-        High = 50
+        Medium = 75,
+        High = 95
     }
 
     public HostageDensity hostageDensity;
