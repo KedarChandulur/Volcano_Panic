@@ -12,7 +12,7 @@ I have used Navigation mesh, Singleton(For GameManager) and EventHandlers to mak
 
 
 
-Additional Info:
+# Additional Info:
 This game is the first of three I created as part of a course during my master's program.
 
 For the design of Volcano Panic, I utilized the Triadic Game Design framework to achieve a balance between the World of Reality, the World of Meaning, and the World of Play.
